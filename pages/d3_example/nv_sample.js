@@ -15,12 +15,14 @@ var chart = nv.addGraph(function() {
         initialize: function() {
             this.mu = Math.PI/2;
             this.sigma = 0.5;
-            svg.datum(sin(this.mu, this.sigma))
+            this.sinYscale = 1.0;
+            svg.datum(sin(this.mu, this.sigma, this.sinYscale))
               .transition().duration(500)
                 .call(chart);
         },
         update:     function() {
-            svg.datum(sin(this.mu, this.sigma))
+            console.log(this.sinYscale);
+            svg.datum(sin(this.mu, this.sigma, this.sinYscale))
                 .call(chart);
         }
     });
@@ -35,7 +37,7 @@ var chart = nv.addGraph(function() {
 
 
 // TODO: somehow make this efficient (using crossfilter?)
-function sin(mu, sigma) {
+function sin(mu, sigma, sinYscale) {
     var sin = [],
         x,
         xmin = -Math.PI/2.,
@@ -43,13 +45,15 @@ function sin(mu, sigma) {
         npts = 100,
         gaus = [];
 
+    console.log("hi");
+
     var a = 1.0/(sigma * Math.sqrt(2.0 * Math.PI)),
         b = mu,
         c = sigma;
 
     for (var i = 0; i < npts; i++) {
         x = (xmax - xmin) * (i/npts);
-        sin.push({ x: x, y: Math.sin(x) });
+        sin.push({ x: x, y: sinYscale * Math.sin(x) });
         gaus.push({ x: x, y: a * Math.exp( -( Math.pow(x-b, 2) )/( 2.0 * Math.pow(c, 2) ) ) });
     }
 
