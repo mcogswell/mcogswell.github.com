@@ -8,8 +8,6 @@ relative_permalinks: true
 
 # Setup
 title:            Michael Cogswell
-tagline:          'Personal Website'
-description:      ''
 url:              http://mcogswell.io
 baseurl:          /
 
