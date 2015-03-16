@@ -7,66 +7,55 @@ In 2013 I completed bachelor of science degrees in Computer Science and Mathemat
 at Virginia Tech and liked the place well enough to stay a while longer.
 Currently, I'm a PhD student working on Machine Learning and Computer Vision with
 [Dhruv Batra](https://filebox.ece.vt.edu/~dbatra/) -- also at Virginia Tech.
-Below you'll find more about what I do and why.
+Check out my [research interests](#ri) below and [this essay](/2015/03/15/whyai/)
+I wrote to find out more about what I do.
 
 Apart from research, I've been an active fencer since 2005. Check out the
 [VT fencing page](http://www.fencing.org.vt.edu/) if you're interested in
 fencing at Virginia Tech.
 
 
-Why AI?
-===
+Research Interests {#ri}
+==================
 
-Like many, I fondly remember stories told by science communicators
-like Brian Greene and Neil deGrasse Tyson.
-They marveled at Newton's laws then revealed the existence of more accurate theories
-whose existence had been unexpected: Special Relativity, General Relativity, Quantum
-Mechanics.
-The idea that nature could be misunderstood at a fundamental level, but that we could slowly, systematically
-reveal hidden layers led me to think of science as one of the most
-worthwhile pursuits.
+I want to scale the ability of Machine Learning toward AI by developing models
+that encompass an increasing amount what we call intelligence. That's hard,
+and I can only do a small part of it. In particular, I'm
+[focusing](https://www.youtube.com/watch?v=KWNBzAgAiMc) on Deep Learning
+(today's neural networks) with applications to Computer Vision (vision).
 
-Nonetheless, I became interested in computers. I knew scientific understanding
-had made possible their existence, but computers were interesting because I 
-could design and implement programs -- I was not motivated by a desire to discover
-things about machines. My interest led to degrees in Computer Science
-(engineering processes for machines) and Mathematics. Each was quite interesting
-on its own, but neither endeavor seemed to lead me to anything like the mystique
-of physics at the start of the 20th century. 
-Mathematics led to unsolved problems which were all either grand and unsolvable
-(by me) or uninteresting.
-Computer Science seemed much the same. There were plenty of scientific problems,
-but none of them seemed that exciting. It was more worthwhile, more fun, to apply 
-what I had learned to engineer software, like most of my peers.
+I suppose I'm something like a [connectionist](http://en.wikipedia.org/wiki/Connectionism).
+I want to design modules and connect them together in a way that improves
+[deep](http://en.wikipedia.org/wiki/Deep_learning)
+[neural networks](http://en.wikipedia.org/wiki/Artificial_neural_network).
+Hopefully this involves experimentation and theory, each pushing the other
+to new heights as is often the case in science.
 
-So I was accepted as a co-op at IBM and found myself working on a data analytics project.
-This was a satisfying experience and left me with the impression that I could
-have a successful, fulfilling career in software development. The particular
-project I worked on left me with some knowledge of Machine Learning (ML) and a desire
-to pursue it further. Partly for the co-op, and partly for my own interest,
-I learned about the field and was lucky to discover how most of the tools I had pursued
-were used in this one area. That, by itself, wasn't enough to maintain interest.
-Like ML, Numerical Analysis used my interests to a similar degree, but
-I had already ruled that out as uninteresting. Still, ML had a certain appeal,
-so I looked into it more.
 
-While at IBM, I applied to the 5-year Masters program in the CS department and
-began looking for advisors in Machine Learning.
-Since I was already interested in Computer Vision, Dr. Dhruv Batra seemed like the
-perfect fit, and I've been lucky enough to work with him for my MS and PhD.
-Recently, we've focused on Convolutional Neural Networks (CNNs).
+Currently I focus on vision for a couple reasons:
 
-In particular, CNNs help illustrate a point I've discovered while learning about
-Artificial Intelligence (AI).
-Problems in this field sometimes feel grand (like Relativity and Quantum Mechanics) 
-and we're making a lot of progress very quickly (as pysicists did in the first
-half of the 20th century).
-In 2012, some researchers edited the previous iteration of CNNs and
-ended up producing spectacular results on a fundamental problem
-in Computer Vision. That year and in every year since, large gains have been
-made on that and similar problems using CNNs.
-Progress like this and anticipation of harder problems
-yet to be solved, yet to be posed, are what drive me to participate in research.
+* I like to think visually, so I find vision problems intuitive.
 
-Since my interests line up well and I draw motivation from the field's
-potential, AI and ML seem like the right place for me.
+* There's an active vision community which is integrated with the ML community
+and serves as a great melting pot for ideas as well as a place I can go
+to figure out which ideas are good and which are bad.
+
+* _Vision problems are complex._ Start by building parts of intelligent
+systems and gradually understanding those, but eventually you need to connect
+the parts to build a system that's not singly focused. [^parts]
+To do (my kind of) vision, one must recognize patterns in images then connect
+those patterns with other knowledge to form new patterns [^complex_vision].
+
+* _Vision problems are simple._ Somehow, vision seems like a smallest
+possible subset of intelligence that maintains the above complexity.
+Animals can replicate a significant amount of the human visual system, but
+they tend not to be able to do things like write and speak language.
+
+I'm still fairly new to the field, so all this could change in a couple years :)
+
+[^parts]: argued by [Minsky](http://en.wikipedia.org/wiki/Society_of_Mind) and [Hofstadter](http://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach)
+
+[^complex_vision]: For an example, see the 8th slide in
+    [Devi Parikh](https://filebox.ece.vt.edu/~parikh/)'s
+    [first](https://filebox.ece.vt.edu/~F13ECE5554/lectures/parikh_lecture1_intro.pptx)
+    [intro to computer vision](https://filebox.ece.vt.edu/~F13ECE5554/) lecture.
