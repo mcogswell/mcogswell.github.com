@@ -6,13 +6,22 @@ title: About Me
 In 2013 I completed bachelor of science degrees in Computer Science and Mathematics
 at Virginia Tech and liked the place well enough to stay a while longer.
 Currently, I'm a PhD student working on Machine Learning and Computer Vision with
-[Dhruv Batra](https://filebox.ece.vt.edu/~dbatra/) -- also at Virginia Tech.
+[Dhruv Batra][dhruv_page] -- also at Virginia Tech.
 Check out my [research interests](#ri) below and [this essay](/2015/03/15/whyai/)
 I wrote to find out more about what I do.
 
-Apart from research, I've been an active fencer since 2005. Check out the
-[VT fencing page](http://www.fencing.org.vt.edu/) if you're interested in
+[dhruv_page]: https://filebox.ece.vt.edu/~dbatra/
+
+Apart from research, I've been an active fencer since 2005, competing in
+club collegiate tournaments and USFA events (mostly in the
+[Virginia Division][vadiv]). The last time I updated this
+page I was a [C2014][ratings] in foil. Check out the
+[VT fencing page][vtfencing] if you're interested in
 fencing at Virginia Tech.
+
+[vadiv]: http://va-usfa.com/
+[ratings]: http://en.wikipedia.org/wiki/United_States_Fencing_Association#Ratings
+[vtfencing]: http://www.fencing.org.vt.edu/
 
 
 Research Interests {#ri}
@@ -56,6 +65,9 @@ I'm still fairly new to the field, so all this could change in a couple years :)
 [^parts]: argued by [Minsky](http://en.wikipedia.org/wiki/Society_of_Mind) and [Hofstadter](http://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach)
 
 [^complex_vision]: For an example, see the 8th slide in
-    [Devi Parikh](https://filebox.ece.vt.edu/~parikh/)'s
-    [first](https://filebox.ece.vt.edu/~F13ECE5554/lectures/parikh_lecture1_intro.pptx)
-    [intro to computer vision](https://filebox.ece.vt.edu/~F13ECE5554/) lecture.
+    [Devi Parikh][devi_page]'s [first][cv_lecture1]
+    [intro to computer vision][cv_intro_course] lecture.
+
+[devi_page]: https://filebox.ece.vt.edu/~parikh/
+[cv_lecture1]: https://filebox.ece.vt.edu/~F13ECE5554/lectures/parikh_lecture1_intro.pptx
+[cv_intro_course]: https://filebox.ece.vt.edu/~F13ECE5554/
