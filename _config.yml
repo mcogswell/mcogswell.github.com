@@ -9,7 +9,7 @@ relative_permalinks: true
 # Setup
 title:            Michael Cogswell
 url:              http://mcogswell.io
-baseurl:          /
+baseurl:          ''
 
 author:
   name:           'Michael Cogswell'
