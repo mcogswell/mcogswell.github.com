@@ -7,16 +7,15 @@ In 2013 I completed bachelor of science degrees in Computer Science and Mathemat
 at Virginia Tech and liked the place well enough to stay a while longer.
 Currently, I'm a PhD student working on Machine Learning and Computer Vision with
 [Dhruv Batra][dhruv_page] -- also at Virginia Tech.
-Check out my [research interests](#ri) below and [this essay](/2015/03/15/whyai/)
-I wrote to find out more about what I do.
+Check out my [research interests](#ri) below and [this essay](/2015/03/15/whyai/),
+which I wrote to find out more about what I do.
 
 [dhruv_page]: https://filebox.ece.vt.edu/~dbatra/
 
 Apart from research, I've been an active fencer since 2005, competing in
 club collegiate tournaments and USFA events (mostly in the
-[Virginia Division][vadiv]). The last time I updated this
-page I was a [C2014][ratings] in foil. Check out the
-[VT fencing page][vtfencing] if you're interested in
+[Virginia Division][vadiv]). I'm currently a [C2014][ratings] in foil.
+Check out the [VT fencing page][vtfencing] if you're interested in
 fencing at Virginia Tech.
 
 [vadiv]: http://va-usfa.com/
