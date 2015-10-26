@@ -214,10 +214,10 @@ There are two ways to generate visualizations:
 
     Actually, I lied. Visualizing the pure image gradients generates is not very satisfying,
     as shown in Simonyan, Vedaldi, and Zisserman [paper](http://arxiv.org/abs/1312.6034).
-    Zeiler and Fergus created a "deconv" visualization which is almost the gradient, but they
-    used a slightly different function to compute the backward pass of the
+    Zeiler and Fergus created a "deconv" visualization which is mathematically similar to the gradient image,
+    but uses a slightly different function to compute the backward pass of the
     ReLU (explained in [Simonyan, Vedaldi, and Zisserman](http://arxiv.org/abs/1312.6034)
-    and quite clearly in the [guided backprop paper](http://arxiv.org/abs/1412.6806) detailed below).
+    and quite clearly in the [guided backprop paper](http://arxiv.org/abs/1412.6806)).
 
     [Deconv visualizations](http://arxiv.org/abs/1311.2901) by Zeiler and Fergus were the first to figure out this method.
     A more [recent extension](http://arxiv.org/abs/1412.6806) by Springenberg, Dosovitskiy, Brox, and Riedmiller
@@ -235,12 +235,9 @@ footnote at the end of this sentence[^other_vis].
 
 ### Examples
 
-Now let's use guided backprop to visualize our CNN layer by layer, starting with
-`conv1` and working up to `fc8`. Note that visualizations from previous methods of type 2 are much smaller
-because they crop out the sections of the image that gray (0 "gradient").
-I leave the whole image intact, which means it's mostly gray, but the location
-information this preserves will be useful later. Here's are visualizations of
-two neurons from `conv1`:
+Now let's use guided backprop to visualize a couple neurons in different layers.
+Here are visualizations of neurons 4 and 65 from
+layer `conv1` (after the ReLU, but not after pooling):
 
 <figure markdown="1">
 ![conv1](imgs/conv1.png){:.center}
@@ -250,17 +247,26 @@ two neurons from `conv1`:
 </figure>
 {:.zoom_img}
 
-The top of each side contains one of the "gradient" images this
-method outputs, but I haven't told you about the bottom quite yet.
-The problem with these visualizations is that it can sometimes be hard
+The top of each side contains one of the "gradient" images the
+method produces, which means that changing the non-gray pixels
+in the original image will likely raise the activation of the corresponding neuron (`conv1_4` or `conv_65`).
+It's sometimes hard
 to figure out exactly what about the highlighted pixels the CNN
-responds to. One good way to figure this out is to look at
-"gradient" patches in other images which highly activate the same neuron.
-On the left of the bottom images are these patches cropped from
+responds to. One good way to do it is to look at
+"gradient" patches in other images which highly activate the same neuron, so
+on the left of the bottom images are these patches cropped from
 their images (taken from the ILSVRC 2012 validation set). On the
-right are the corresponding cropped "gradient" images (black diagonals
-and red blobs). As you might already know, `conv1` learns to look for
-simple features like oriented edges and colored blobs.
+right are the corresponding "gradient" image patches (black diagonals
+and red blobs; cropped from the whole gradient image). As you might
+already know, `conv1` learns to look for
+simple features which are easy to relate pixels; e.g., oriented edges and colored blobs.
+
+If you're familiar with the type 2 visualizations from previous section then
+you might wonder why these visualizations are much larger and mostly gray.
+Typically the non-gray section is cropped out of the gray because the gray sections
+have 0 gradient and are uninformative, as in the bottom part of the visualization.
+To keep later in mind I leave the whole image intact, which means it's mostly
+gray and insignificant, but location information is preserved.
 
 <figure markdown="1">
 ![conv2](imgs/conv2.png){:.center}
@@ -270,13 +276,16 @@ simple features like oriented edges and colored blobs.
 </figure>
 {:.zoom_img}
 
-`Conv2` is a bit less straightforward than `conv`.
+`conv2` is a bit less straightforward to understand than `conv1`.
 It's hard to say what the neuron on the left seems to be looking for.
 Perhaps it's a black or white background with some sort of clutter from
-the other color. This doesn't necessarily mean it's useless. We just
-might not know its use. Unit 69 is clearly looking for mostly horizontal
-lines that go up slightly to the left. Note how it's invariant to
-context (shower tiles, arm band, bowl).
+the other color. I don't know how this contributes to recognition of ILSVRC
+object classes and it's hard to find a rule that directly relates it to image pixels,
+but that doesn't mean it's useless. Unit 69 is clearly looking for mostly horizontal
+lines that go up slightly to the left. It's nice that the unit is invariant to
+context (shower tiles, arm band, bowl), but I still have trouble relating it to
+object classes and I'm not sure how the fuzzy bits around the line in the gradient
+images relate to pixels.
 
 <figure markdown="1">
 ![conv5 and conv4](imgs/conv4_conv5.png){:.center}
@@ -289,44 +298,50 @@ context (shower tiles, arm band, bowl).
 Deeper layers capture more abstract concepts like the beak
 of a bird (`conv5_137`), which also activates highly
 in response to Grumpy Cat's nose. Certain features like `conv4_269`
-respond to specific patterns, but it's hard to identify
-exactly what they or how they might be useful.
+respond to specific patterns which are clearly at a larger scale
+than `conv1` or `conv2`, but it's hard to identify
+exactly how they might be useful. It's hard to come up with a rule to
+extract either pattern from pixels.
 
 
 
 What the Visualizations don't say
 ---
 
-All of these visualizations but the work I mention at the end of this section looks at patterns
-for one neuron or for a set of neurons, but doesn't look at how those patterns relate to one another.
-There are a couple problems:
+In each example it was easy to understand the neurons in input/pixel space (e.g., `conv1_4` is an edge filter),
+easy to understand the neurons in output space (e.g., `conv5_137` should probably fire for birds), or
+it was hard to understand the neurons in either space (e.g., `conv2_174`).
+These visualizations are nice, but the inability to understand one neuron in terms of input or output
+prevents us from understand ConvNets see, how they connect input to output.
+To be more specific,
 
-1. These visualizations _can_ sometimes confirm (qualitatively) that particular neurons or sets of neurons
-   select for concepts humans can label and relate like "cat's head" and "ear".
+1. These visualizations _can_ sometimes confirm (qualitatively) that particular neurons
+   select for concepts humans can label or for concepts that humans can connect directly to pixel space.
 
-2. This interpretation is limited to certain high level neurons.
+2. The first interpretation is limited to certain high level neurons.
    We can see that middle layers of neurons might be useful, but we don't
    really know why. They need to be related in specific ways to either
    the gabor filters or the high level object parts, but we can't identify those ways.
 
-3. Even though we can relate some things in specific ways -- a cat's head and its ear --
+3. Even though we can relate some things in specific ways (e.g., a head should have an ear)
    we don't know for sure that the CNN is doing that (though it's a pretty reasonable guess :).
    However, it could also be relating unknown parts in strange or (if you want to go that far) unwanted ways.
    These visualizations don't say that the head is made up of pointy ears, a pink nose, whiskers, etc.
 
-These relationships are a fundamental part of the main intuition behind ConvNets:
-that they learn __hierarchies of features__.
-Hierarchies are graphs with nodes _and_ edges. To understand hierarchies
-we need to talk about the edges.
+These relationships are a fundamental part of ConvNets.
+They learn __hierarchies of features__.
+Hierarchies are graphs with nodes _and_ edges.
+To understand hierarchies we need to talk about the edges.
 
-The one thing I've seen which does this
+The one thing I know which does this
 is [DrawNet](http://people.csail.mit.edu/torralba/research/drawCNN/drawNet.html),
 from Antonio Torralba at MIT. This is a really neat visualization, which you should
 go check out (though perhaps later ;). It uses the empirical receptive fields from [this paper](http://arxiv.org/abs/1412.6856)
 about emerging object detectors along with a visualization that connects individual
 neurons that depend heavily on each other[^not_parcoord].
-However, it's still not image specific, so it can't answer the question.
-
+However, it's still not image specific, so it can only say how a ConvNet
+would like to relate some parts to others without even knowing which neurons
+are likely to fire together.
 
 
 One way to Visualize the Edges
