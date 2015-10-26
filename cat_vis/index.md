@@ -305,7 +305,7 @@ extract either pattern from pixels.
 
 
 
-What the Visualizations don't say
+What the Visualizations Don't Say
 ---
 
 In each example it was easy to understand the neurons in input/pixel space (e.g., `conv1_4` is an edge filter),
@@ -347,67 +347,81 @@ are likely to fire together.
 One way to Visualize the Edges
 ---
 
+This is another slightly technical section that tries to relate
+neurons in adjacent layers so we can visualize them together.
+Skip to the [examples](#some-features-in-a-hierarchy) if you want.
+
 ### Edges
 
-To get a hierarchy we need a way to connect neurons in adjacent layers
-that is specific to both the image and the neurons. Consider some layer (`fc7`)
-and the layer below it (`fc6`). Given an image and a highly activated neuron
-in `fc7`, how much does each neuron in `fc6` contribute to the `fc7` activation?
-We'll visualize `fc7` and the `fc6` neurons which most highly activate `fc7`
-and try to interpret the `fc6` neurons as _parts_ of the pattern the
-`fc7` neuron is looking for.
+To get a hierarchy for Grumpy Cat we need a way to connect neurons in adjacent layers
+so they are only connected when (1) both neurons detect a pattern in the input
+_and_ (2) the ConvNet says one neuron is heavily dependent on the other.
+If the first doesn't hold then we'll end up visualizing two units which didn't
+actually find any patterns in the input. If the second doesn't hold then we'll relate
+two neurons which the ConvNet doesn't think are actually related.
 
-But how to compute the important edges?
-There's a natural way to this, but it's easier to explain it with fully
-connected layers, so consider how to weight neurons in `fc6` by
-their contribution toward a highly active neuron in `fc7`.
-Simply computer the gradient of the `fc7` neuron with respect
-to all neurons in `fc6`. This gives a vector with the same
-dimensionality as `fc6` activations. Element-wise multiplication
-of the gradient vector with the activation vector yields another vector
-that contains
+There's a fairly natural way to do this. Consider some fully connected layer `fc7`
+which produces activations $$h^7 \in \mathbb{R}^{d_7}$$ using
 
-1. information about which patterns the `fc7` neuron
-is interested in (weights from `fc6` to `fc7` are used to computed the gradient), and 
+$$
+    h^7 = \max(0, {W^{6-7}}^T h^6)
+$$
 
-2. information about which `fc6` patterns the network actually
-found in the image (`fc6` activations).
+Where $$h^6 \in \mathbb{R}^{d_6}$$ is the output of the previous layer and
+$$W^{6-7} \in \mathbb{R}^{d_7 \times d_6}$$ is the weight matrix for `fc7`.
+The following gradient weights `fc6` in terms of what makes the ConvNet happy, satisfying (2).
 
-The largest entries of (the absolute value of) this vector correspond to neurons
-in `fc6` that most contributed to the high activation of our `fc7` neuron.
+$$
+\partial h^7_i / \partial h^6 = 
+\left\{
+     \begin{array}{lr}
+       W^{6-7}_i & \text{if } h^7_i > 0 \\
+       0   & \text{else}
+     \end{array}
+   \right.\\
+$$
 
-{::comment}
-TODO: figures? or math?
-{:/comment}
+The activation vector $$h_6$$ directly represents patterns detected in `fc6`, satisfying (1).
+Thus, the absolute value of an element-wise product of the two vectors determines which
+neurons in `fc6` activated $$h^7_i$$.
 
-To deal with feature maps (in convolutional layers), just
-reduce each feature map (gradients and forward activations) to one scalar by
-taking a mean across spatial locations. Then the previous algorithm can be applied.
+$$
+w^{6,i} = | h^6 \odot \partial h^7_i / \partial h^6 |
+$$
 
-Here's an example which shows the 1068th `fc6` neuron in terms of the
+In the following examples we'll use the top 5 indices of this vector to select examples to visualize
+in relation to $$h^7_i$$.
+
+To deal with feature maps (e.g., `conv5` to `conv4`),
+compute the gradient feature maps in `conv4` and multiply them with the
+`conv4` feature maps element-wise. Reduce each of the resulting feature maps
+to one scalar by taking a mean across spatial locations then the absolute value of the resulting vector
+and use it to weight `conv4` units.
+
+Here's an example which shows the 600th `fc6` neuron in terms of the
 5 `conv5` units (20, 154, 247, 159, and 222) which most contribute to it.
 Hovering your mouse over the image causes it to zoom.
 
 <figure markdown="1">
-![fc6_conv5](imgs/fc6_1068_conv5.png)
+![fc6_conv5](imgs/fc6_600_conv5.png)
 <figcaption markdown="1">
-`conv5` units which most contributed to the 1068th `fc6` activation
+`conv5` units which most contributed to the 600th `fc6` activation
 </figcaption>
 </figure>
 {:.zoom_img}
 
-### Paths
+### Local Visualization Paths
 
 Before showing off some more examples, I have to mention one
 trick I found helpful for creating relevant visualizations.
 Visualizations of type 2 applied to convolutional
 layers usually set _all_ pixels but one (the highest activation)
 to 0. When visualizing a unit in a convolutional
-layer (e.g., unit 44 in `conv4`) with respect to the layer above (e.g., unit 55 in `conv5`)
-I could visualize the unit (44) by taking a spatial max and setting all other
-pixels to 0, however, that max pixel might be in a location away from the
-max pixel in unit 55, so I can't relate the visualization of unit 55 to the visualization
-of unit 44. To fix this I compute the gradient of unit 55 w.r.t. all units in `conv4` then
+layer, say unit 44 in `conv4`, with respect to the layer above, unit 55 in `conv5`,
+I could visualize unit 44 by taking a spatial max and setting all other
+pixels to 0, however, that max pixel might be in a location far away from the
+max pixel in unit 55, so those parts of the image might not be related and I might not be able to compare the two neurons.
+To fix this I compute the gradient of unit 55 w.r.t. all units in `conv4` then
 set all `conv4` feature maps to 0 _except_ unit 44. This means a local region of pixels
 is visualized in unit 44 instead of a single pixel, but that local region is guaranteed
 to be centered around the highly activated pixel in unit 55, so I can relate the two units[^saturate].
@@ -422,21 +436,26 @@ Some Features in a Hierarchy
 ![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center}
 </figure>
 
-Well... the highest `fc8` activation is unit 284, which means "Siamese cat"
-([Grumpy Cat](https://en.wikipedia.org/wiki/Grumpy_Cat) is a Snowshoe Siamese according to Wikipedia; the ILSVRC doesn't have "Snowshoe Siamese"), so let's start there.
+Well... the highest `fc8` activation is unit 284, which means "Siamese cat".
+[Grumpy Cat](https://en.wikipedia.org/wiki/Grumpy_Cat) turns out to be a Snowshoe Siamese according
+to Wikipedia and the ILSVRC doesn't have "Snowshoe Siamese". Let's start at `fc8_284`.
 
 <figure markdown="1">
 ![grumpy cat fc8](imgs/grumpy_fc8_284_fc7_4032_fc6.png){:.center}
 <figcaption markdown="1">
 The "Siamese cat" neuron (`fc8_284`) along with units that highly activated it in `fc7`
-and units that highly activated one of those in `fc6`.
+and units that highly activated `fc7_4032` in `fc6`.
 </figcaption>
 </figure>
 {:.zoom_img}
 
 Unfortunately, these don't seem very interpretable, probably because these
-layers have no spatial resolution. However, the convolutional
-layers tell a different story. The `conv5` visualizations rooted in `fc8` were
+layers have no spatial resolution. That means we can't really relate classes
+to pixels. However, the convolutional layers tell a different story. `conv5`
+starts with high level interpretable features which we understand as cat
+parts, so maybe we'll be able to almost relate ConvNet outputs to inputs.
+
+The `conv5` visualizations rooted in `fc8` were
 quite saturated, so let's start with a visualization rooted at `fc6_1068`.
 
 {::comment}
@@ -454,9 +473,13 @@ A highly activated `fc6` unit and the `conv5` units which most contributed to it
 {:.zoom_img}
 
 Some units in `conv5` are looking for faces. Some units are looking
-for ears. It becomes easier to tell what's going on once the patch
+for ears. The visualized units of `conv5` which contribute to `fc6_1068`
+seem to look for different parts of the cat which happen to show up in
+different locations.
+
+It becomes easier to tell what's going on once the patch
 visualizations are added, but it's hard to fit all 5 on the same
-screen, so let's set aside the two least relevant units for the momement.
+screen, so let's set aside two of them.
 These are looking for wheels (they look like eyes) and generic animal faces (lots and lots of
 conv5 activations look for some sort of animal face).
 
@@ -468,7 +491,7 @@ conv5 activations look for some sort of animal face).
 </figure>
 {:.zoom_img}
 
-Now we can focus on more relevant neurons.
+Now we can focus on more interesting neurons.
 
 <figure markdown="1">
 ![fc6_conv5](imgs/fc6_1068_conv5.png)
@@ -480,9 +503,13 @@ As shown previously, `conv5_129`, `conv5_247`, and `conv5_243`.
 
 Clearly `conv5_129` is looking for eyes, `conv5_247` seems to be looking
 at furry stuff, and `conv5_243` is looking for dog faces.
+Those are high level categories that could clearly contribute
+to classifying Grumpy Cat as a cat.
+
+> furr + face + eye (perhaps tire) + ... = cat
 
 Let's continue to `conv4` to see what makes up a dog face.
-Again, we'll discard the least relevant
+Again, we'll discard two neurons
 
 <figure markdown="1">
 ![conv4 discarded](imgs/grumpy_conv4_discard.png)
@@ -505,10 +532,13 @@ and keep the rest.
 There are lots face detectors (even in `conv4`!), some sort of pattern
 that seems to find noses (`conv4_265`), and another eye detector.
 I didn't try to find the redundant face and eye detectors, they
-just occur quite frequently. There seems to be a difference in the amount
+just seem to occur quite frequently. There's also a noticable difference in the amount
 of complexity and context around the eyes and faces, with more complexity and
-context in deeper layers. I'm still interested in faces, so let's look at `conv4_371`.
+context in deeper layers.
 
+> dog faces + nose + eye + ... = dog face
+
+I'm still interested in faces, so let's look at `conv4_371`.
 We'll throw out 2 neurons
 
 <figure markdown="1">
@@ -529,9 +559,16 @@ and keep the rest.
 </figure>
 {:.zoom_img}
 
-We got rid of more simple eye and face detectors and kept some interesting features.
+We got rid of a simple eye detector and a vertical white line / face detectors and kept some more interesting features.
 `conv3_374` looks for fur and eyes together, `conv3_240` looks for two eyes and a nose, and `conv3_204`
-looks for a snout with a pink thing (tongue) underneath it. We'll continue with `conv3_240`.
+looks for a snout with a pink thing (tongue) underneath it.
+
+> face + eye + `conv3_374` + `conv3_240` + `conv3_204` + ... = dog face
+
+Clearly `conv3_374`, `conv3_240`, and `conv3_204` are somewhat well defined parts,
+but it's hard to name them.
+
+We'll continue with `conv3_240`.
 
 <figure markdown="1">
 ![conv2 discarded](imgs/grumpy_conv2_discard.png)
@@ -541,7 +578,7 @@ looks for a snout with a pink thing (tongue) underneath it. We'll continue with 
 </figure>
 {:.zoom_img}
 
-The left neuron (`conv2_13`) sort looks like it activated
+The left neuron (`conv2_13`) sort of looks like it activated
 for the cat's cheek, but I can't quite tell what the right one does.
 These are clearly lower level than `conv3`, where there was still
 a simple eye detector and a simple face detector.
@@ -558,6 +595,8 @@ I can see how `conv2_161` and `conv2_21` might be combined to create an eye dete
 where the first looks for insides of eyes and the second looks for outlines. `conv2_156`
 might also be used for noses, but it's not a very strong connection.
 
+> dark black rectangular blob (nose) + circle outline (eye part 1) + small dot (eye part 2) + ... = 2 eyes + nose
+
 Finally, we visualize `conv1`, which looks for straightforward motifs
 that have been around for a while.
 
@@ -569,9 +608,14 @@ that have been around for a while.
 </figure>
 {:.zoom_img}
 
-Hopefully this exercise gave you a sense of what is meant by
-a __hierarchy of features__ and some concrete examples of
-what those features are and how they relate in practice.
+> circular blob + black and white grid + colored edge + ... = small dot
+
+This sort of worked. The parts represented by a neuron's visualization and
+that of the neuron in the layer above 
+
+Although the man
+
+There was a lot of redundancy
 
 
 
@@ -589,6 +633,8 @@ Conclusion
 I've been talking about how to understand images.
 
 
+why redundancy? -- possibly because of the fine grained dog classes
+
 * conclusion
     * talk about ways to know how a thing works... contrast intuitions and mathematical understanding... one preceeds the other
     * talk about being able to understand ConvNets vs being able to understand 
@@ -604,6 +650,8 @@ When humans play chess we mainly look for patterns and can make only
 extremely limited progress trying to consider all possible future moves.
 
 and it might even be close to how we understand the visual world (it discovers parts and we tried to describe the world in parts).
+
+still don't know how to relate fc8 to fc6
 
 
 P.S.: it comes with code (TODO)
