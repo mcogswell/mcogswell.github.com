@@ -1,6 +1,9 @@
 ---
-layout: default
+layout: blog
 title: Why is this a cat?
+comments: true
+disqus_developer: 1
+disqus_id: vis_blog
 published: false
 ---
 
@@ -221,25 +224,61 @@ footnote at the end of this sentence so this blog doesn't drag on for too long[^
 ### Examples
 
 Now let's use guided backprop to visualize our CNN layer by layer, starting with
-`conv1`. Note that visualizations from previous methods of type 2 are much smaller
+`conv1` and working up to `fc8`. Note that visualizations from previous methods of type 2 are much smaller
 because they crop out the sections of the image that gray (0 "gradient").
-I leave the whole image in tact, which means it's mostly gray, but the location
-information this preserves will be useful later. Here's layer `conv1`:
+I leave the whole image intact, which means it's mostly gray, but the location
+information this preserves will be useful later. Here's are visualizations of
+two neurons from `conv1`:
 
 <figure markdown="1">
-![neural network](imgs/basic_nn.png){:.center}
+![conv1](imgs/conv1.svg){:.center}
 <figcaption markdown="1">
-A simple Neural Network with 4 layers (including input and output).[^nn_diagram]
+`conv1_4` and `conv1_65`
 </figcaption>
 </figure>
+{:.zoom_img}
 
+The top of each side contains one of the "gradient" images this
+method outputs, but I haven't told you about the bottom quite yet.
+The problem with these visualizations is that it can sometimes be hard
+to figure out exactly what about the highlighted pixels the CNN
+responds to. One good way to figure this out is to look at
+"gradient" patches in other images which highly activate the same neuron.
+On the left of the bottom images are these patches cropped from
+their images (taken from the ILSVRC 2012 validation set). On the
+right are the corresponding cropped "gradient" images (black diagonals
+and red blobs). As you might already know, `conv1` learns to look for
+simple features like oriented edges and colored blobs.
 
+<figure markdown="1">
+![conv2](imgs/conv2.svg){:.center}
+<figcaption markdown="1">
+`conv2_174` and `conv2_69`
+</figcaption>
+</figure>
+{:.zoom_img}
 
-TODO: mention that my vis are after the relu, not pooling
+`Conv2` is a bit less straightforward than `conv`.
+It's hard to say what the neuron on the left seems to be looking for.
+Perhaps it's a black or white background with some sort of clutter from
+the other color. This doesn't necessarily mean it's useless. We just
+might not know its use. Unit 69 is clearly looking for mostly horizontal
+lines that go up slightly to the left. Note how it's invariant to
+context (shower tiles, arm band, bowl).
 
-TODO: use choice vis examples to show how we can't figure out why this is a cat
+<figure markdown="1">
+![conv5 and conv4](imgs/conv4_conv5.svg){:.center}
+<figcaption markdown="1">
+`conv5_137` and `conv4_269`
+</figcaption>
+</figure>
+{:.zoom_img}
 
-TODO: be sure to include "cat's head"
+Deeper layers capture more abstract concepts like the beak
+of a bird (`conv5_137`), which also activates highly
+in response to Grumpy Cat's nose. Certain features like `conv4_269`
+respond to specific patterns, but it's hard to identify
+exactly what they or how they might be useful.
 
 
 
@@ -281,6 +320,237 @@ However, it's still not image specific, so it can't answer the question.
 One way to Visualize the Edges
 ---
 
+### Edges
+
+To get a hierarchy we need a way to connect neurons in adjacent layers
+that is specific to both the image and the neurons. Consider some layer (`fc7`)
+and the layer below it (`fc6`). Given an image and a highly activated neuron
+in `fc7`, how much does each neuron in `fc6` contribute to the `fc7` activation?
+We'll visualize `fc7` and the `fc6` neurons which most highly activate `fc7`
+and try to interpret the `fc6` neurons as _parts_ of the pattern the
+`fc7` neuron is looking for.
+
+But how to compute the important edges?
+There's a natural way to this, but it's easier to explain it with fully
+connected layers, so consider how to weight neurons in `fc6` by
+their contribution toward a highly active neuron in `fc7`.
+Simply computer the gradient of the `fc7` neuron with respect
+to all neurons in `fc6`. This gives a vector with the same
+dimensionality as `fc6` activations. Element-wise multiplication
+of the gradient vector with the activation vector yields another vector
+that contains
+
+1. information about which patterns the `fc7` neuron
+is interested in (weights from `fc6` to `fc7` are used to computed the gradient), and 
+
+2. information about which `fc6` patterns the network actually
+found in the image (`fc6` activations).
+
+The largest entries of (the absolute value of) this vector correspond to neurons
+in `fc6` that most contributed to the high activation of our `fc7` neuron.
+
+{::comment}
+TODO: figures? or math?
+{:/comment}
+
+To deal with feature maps (in convolutional layers), just
+reduce each feature map (gradients and forward activations) to one scalar by
+taking a mean across spatial locations. Then the previous algorithm can be applied.
+
+Here's an example which shows the 1068th `fc6` neuron in terms of the
+5 `conv5` units (20, 154, 247, 159, and 222) which most contribute to it.
+Hovering your mouse over the image causes it to zoom.
+
+<figure markdown="1">
+![fc6_conv5](imgs/fc6_1068_conv5.png)
+<figcaption markdown="1">
+`conv5` units which most contributed to the 1068th `fc6` activation
+</figcaption>
+</figure>
+{:.zoom_img}
+
+### Paths
+
+Before showing off some more examples, I have to mention one
+trick I found helpful for creating relevant visualizations.
+Visualizations of type 2 applied to convolutional
+layers usually set _all_ pixels but one (the highest activation)
+to 0. When visualizing a unit in a convolutional
+layer (e.g., unit 44 in `conv4`) with respect to the layer above (e.g., unit 55 in `conv5`)
+I could visualize the unit (44) by taking a spatial max and setting all other
+pixels to 0, however, that max pixel might be in a location away from the
+max pixel in unit 55, so I can't relate the visualization of unit 55 to the visualization
+of unit 44. To fix this I compute the gradient of unit 55 w.r.t. all units in `conv4` then
+set all `conv4` feature maps to 0 _except_ unit 44. This means a local region of pixels
+is visualized in unit 44 instead of a single pixel, but that local region is guaranteed
+to be centered around the highly activated pixel in unit 55, so I can relate the two units[^saturate].
+
+
+Some Features in a Hierarchy
+---
+
+> Why is this a cat?
+
+<figure markdown="1">
+![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center}
+</figure>
+
+Well... the highest `fc8` activation is unit 284, which means "Siamese cat"
+([Grumpy Cat](https://en.wikipedia.org/wiki/Grumpy_Cat) is a Snowshoe Siamese according to Wikipedia; the ILSVRC doesn't have "Snowshoe Siamese"), so let's start there.
+
+<figure markdown="1">
+![grumpy cat fc8](imgs/grumpy_fc8_284_fc7_4032_fc6.png){:.center}
+<figcaption markdown="1">
+The "Siamese cat" neuron (`fc8_284`) along with units that highly activated it in `fc7`
+and units that highly activated one of those in `fc6`.
+</figcaption>
+</figure>
+{:.zoom_img}
+
+Unfortunately, these don't seem very interpretable, probably because these
+layers have no spatial resolution. However, the convolutional
+layers tell a different story. The `conv5` visualizations rooted in `fc8` were
+quite saturated, so let's start with a visualization rooted at `fc6_1068`.
+
+{::comment}
+interesting paths
+fc8_284 -> fc7_1757 -> fc6_3354
+fc8_284 -> fc7_4032 -> fc6_1068
+{:/comment}
+
+<figure markdown="1">
+![grumpy cat fc6 to conv5](imgs/grumpy_fc6_1068_conv5.png){:.center}
+<figcaption markdown="1">
+A highly activated `fc6` unit and the `conv5` units which most contributed to it.
+</figcaption>
+</figure>
+{:.zoom_img}
+
+Some units in `conv5` are looking for faces. Some units are looking
+for ears. It becomes easier to tell what's going on once the patch
+visualizations are added, but it's hard to fit all 5 on the same
+screen, so let's set aside the two least relevant units for the momement.
+These are looking for wheels (they look like eyes) and generic animal faces (lots and lots of
+conv5 activations look for some sort of animal face).
+
+<figure markdown="1">
+![grumpy cat less relevant conv5](imgs/grumpy_conv5_238_conv5_222.png){:.center}
+<figcaption markdown="1">
+</figcaption>
+`conv5_238` and `conv5_222`
+</figure>
+{:.zoom_img}
+
+Now we can focus on more relevant neurons.
+
+<figure markdown="1">
+![fc6_conv5](imgs/fc6_1068_conv5.png)
+<figcaption markdown="1">
+As shown previously, `conv5_129`, `conv5_247`, and `conv5_243`.
+</figcaption>
+</figure>
+{:.zoom_img}
+
+Clearly `conv5_129` is looking for eyes, `conv5_247` seems to be looking
+at furry stuff, and `conv5_243` is looking for dog faces.
+
+Let's continue to `conv4` to see what makes up a dog face.
+Again, we'll discard the least relevant
+
+<figure markdown="1">
+![conv4 discarded](imgs/grumpy_conv4_discard.png)
+<figcaption markdown="1">
+`conv4_295` and `conv4_302`
+</figcaption>
+</figure>
+{:.zoom_img}
+
+and keep the rest.
+
+<figure markdown="1">
+![conv4 relevant](imgs/grumpy_conv4_relevant.png)
+<figcaption markdown="1">
+`conv4_371`, `conv4_265`, and `conv4_348`
+</figcaption>
+</figure>
+{:.zoom_img}
+
+There are lots face detectors (even in `conv4`!), some sort of pattern
+that seems to find noses (`conv4_265`), and another eye detector.
+I didn't try to find the redundant face and eye detectors, they
+just occur quite frequently. There seems to be a difference in the amount
+of complexity and context around the eyes and faces, with more complexity and
+context in deeper layers. I'm still interested in faces, so let's look at `conv4_371`.
+
+We'll throw out 2 neurons
+
+<figure markdown="1">
+![conv3 discarded](imgs/grumpy_conv3_discard.png)
+<figcaption markdown="1">
+`conv3_341` and `conv3_343`
+</figcaption>
+</figure>
+{:.zoom_img}
+
+and keep the rest.
+
+<figure markdown="1">
+![conv3 keep](imgs/grumpy_conv3_keep.png)
+<figcaption markdown="1">
+`conv3_374`, `conv3_240`, and `conv3_204`
+</figcaption>
+</figure>
+{:.zoom_img}
+
+We got rid of more simple eye and face detectors and kept some interesting features.
+`conv3_374` looks for fur and eyes together, `conv3_240` looks for two eyes and a nose, and `conv3_204`
+looks for a snout with a pink thing (tongue) underneath it. We'll continue with `conv3_240`.
+
+<figure markdown="1">
+![conv2 discarded](imgs/grumpy_conv2_discard.png)
+<figcaption markdown="1">
+`conv2_13` and `conv2_81`
+</figcaption>
+</figure>
+{:.zoom_img}
+
+The left neuron (`conv2_13`) sort looks like it activated
+for the cat's cheek, but I can't quite tell what the right one does.
+These are clearly lower level than `conv3`, where there was still
+a simple eye detector and a simple face detector.
+
+<figure markdown="1">
+![conv2 keep](imgs/grumpy_conv2_keep.png)
+<figcaption markdown="1">
+`conv2_156`, `conv2_21`, and `conv2_161`
+</figcaption>
+</figure>
+{:.zoom_img}
+
+I can see how `conv2_161` and `conv2_21` might be combined to create an eye detector
+where the first looks for insides of eyes and the second looks for outlines. `conv2_156`
+might also be used for noses, but it's not a very strong connection.
+
+Finally, we visualize `conv1`, which looks for straightforward motifs
+that have been around for a while.
+
+<figure markdown="1">
+![conv1 keep](imgs/grumpy_conv1_keep.png)
+<figcaption markdown="1">
+`conv1_93`, `conv1_74`, and `conv1_88`
+</figcaption>
+</figure>
+{:.zoom_img}
+
+Hopefully this exercise gave you a sense of what is meant by
+a __hierarchy of features__ and some concrete examples of
+what those features are and how they relate in practice.
+
+
+
+Conclusion
+---
+
 > Why is this a cat?
 
 <figure markdown="1">
@@ -289,58 +559,16 @@ One way to Visualize the Edges
 
 
 
-If it's looking for a cat's ear then
-one of those feature maps might look something like this[^2]:
+I've been talking about how to understand images.
 
-![ear](imgs/grumpy_conv4_269.jpeg){:.center}
-
-Otherwise the feature maps are mostly blank.
-
-
-
-
-TODO: cite correctly
-
-
-
-{::comment}
-* explain my extension of the ZF visualization
-    1. connect neurons in adjacent layers in the visualization
-    2. visualize paths of neurons
-{:/comment}
-
-
-
-
-
-{::comment}
-* demonstrate how cnn representations break down in to parts
-    * 2-3 full examples?
-{:/comment}
-
-More Examples
----
-
-
-
-{::comment}
-* conclusion
-    * talk about ways to know how a thing works... contrast intuitions and mathematical understanding... one preceeds the other
-    * talk about being able to understand CNNs vs being able to understand 
-        * perhaps we understood HOG better, but somehow we can understand CNNs better because it more closely maps to our visual system
-{:/comment}
-
-Conclusion
----
 
 * conclusion
     * talk about ways to know how a thing works... contrast intuitions and mathematical understanding... one preceeds the other
     * talk about being able to understand CNNs vs being able to understand 
         * perhaps we understood HOG better, but somehow we can understand CNNs better because it more closely maps to our visual system
 
-... the cool thing about CNNs is that __there is complexity__, we may be able
-to understand that complexity if we enlist the aid of our visual senses,
-and it might even be close to how we understand the visual world (it discovers parts and we tried to describe the world in parts).
+One cool thing about CNNs is that __there is complexity__ and we
+can try to understand it, especially if we enlist the aid of human vision through visualization.
 This is not at all the case for Deep Blue.
 That program worked by approximately enumerating possible chess games
 many moves away (there are lots, so this is hard) and applying some
@@ -348,18 +576,36 @@ algorithmic and heursitic tricks so it could enumerate fewer.
 When humans play chess we mainly look for patterns and can make only
 extremely limited progress trying to consider all possible future moves.
 
+and it might even be close to how we understand the visual world (it discovers parts and we tried to describe the world in parts).
+
 
 P.S.: it comes with code (TODO)
 
 TODO: thank yous
 
 
-[^nn_intro]: Michael Neilsen's [book](http://neuralnetworksanddeeplearning.com/) is a good starting point for learning how
-    Neural Networks work, as is Andrej Karpathy's code oriented [guide](http://karpathy.github.io/neuralnets/).
-    Pat Winston does an excellent [lecture](https://www.youtube.com/watch?v=q0pm3BrIUFo) in his intro Artificial Intelligence course.
 
-    Karpath's recent [blog](http://karpathy.github.io/2015/10/25/selfie/) has a nice, short CNN intro toward the beginning.
-    Chris Olah does a nice job introducing Convolutional Neural Networks in his [blog](http://colah.github.io/posts/2014-07-Conv-Nets-Modular/).
+More Examples
+---
+
+Here are a couple more interesting relations.
+
+![A cat!](imgs/cat_conv5_159.png)
+{:.zoom_img}
+
+
+
+
+[^nn_intro]:
+    Andrej Karpathy's recent [blog](http://karpathy.github.io/2015/10/25/selfie/) is a blog length introduction
+    CNNs for a wide audience. Also see [this](https://www.youtube.com/watch?v=bHvf7Tagt18)
+    introduction to Machine Learning and Deep Learning from Google.
+
+    For more technical details on NNs and CNNs, try Michael Neilsen's [book](http://neuralnetworksanddeeplearning.com/),
+    Andrej Karpathy's code oriented [guide](http://karpathy.github.io/neuralnets/), or 
+    one of Chris Olah's [blogs about CNNs](http://colah.github.io/posts/2014-07-Conv-Nets-Modular/).
+    Pat Winston also has a [lecture about neural networks](https://www.youtube.com/watch?v=q0pm3BrIUFo) in his
+    intro Artificial Intelligence course.
 
     I learned the basics from Andrew Ng's Coursera [course](https://www.coursera.org/learn/machine-learning) on Machine Learning
     and Geoffrey Hinton's [course](https://www.coursera.org/course/neuralnets) that dives a bit deeper into Neural Networks.
@@ -397,7 +643,10 @@ one such method seeing (also part of his Artificial Intelligence course).
     an order (e.g., neuron 5 is greater than neuron 88), but no such ordering of
     neurons in the same layer exists.
 
-
+[^saturate]: This tends to saturate visualizations, especially as they
+    grow further from the root activation. I couldn't find simple rule that consistently
+    prevented saturating, but I found the saturated versions still work work well enough.
+    Let me know if you come up with something.
 
 
 
@@ -453,6 +702,16 @@ Clearly we know that certain
 
 
 
+
+TODO: cite correctly
+
+TODO: mention that my vis are after the relu, not pooling
+
+TODO: use choice vis examples to show how we can't figure out why this is a cat
+
+TODO: be sure to include "cat's head"
+
+TODO: point out that fc* vis always look the same
 
 
 
@@ -521,11 +780,8 @@ http://werbos.ece.vt.edu:5000/vis/cat.jpg?blob_name=conv5&act_id=159
 conv5_159 -> conv4_356 -> conv3_228 (upper left ear) and conv3_227 (lower right ear)
 
 
-![A cat!](imgs/cat_conv5_159.png)
-{: .overflow_center }
-
 ![A cat!](imgs/cat_conv5_159_2.png)
-{: .overflow_center }
+{:.zoom_img}
 
 
 
@@ -538,16 +794,26 @@ conv5_159 -> conv4_356 -> conv3_228 (upper left ear) and conv3_227 (lower right 
 
 
 <style>
-.overflow_center {
-    margin-left: -50%;
-    margin-right: 50%;
-    text-align: center;
-    width: 200%;
-}
-
 .center {
     margin: 0 auto;
     display: block;
+}
+
+figure figcaption {
+    text-align: center;
+}
+
+/* http://punboy.com/zoom-images-on-mouse-hover-using-css3/ */
+.zoom_img img{
+    -moz-transition:-moz-transform 0.5s ease-in; 
+    -webkit-transition:-webkit-transform 0.5s ease-in; 
+    -o-transition:-o-transform 0.5s ease-in;
+}
+
+.zoom_img img:hover{
+    -moz-transform:scale(2); 
+    -webkit-transform:scale(2);
+    -o-transform:scale(2);
 }
 </style>
 {::options parse_block_html="true" /}
