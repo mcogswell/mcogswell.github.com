@@ -1,23 +1,15 @@
 ---
 layout: default
-title: Hierarchies of Parts in Convolutional Neural Networks
+title: Why is this a cat?
 published: false
 ---
 
-Hierarchies of Parts in Convolutional Neural Networks
+Why is this a cat?
 ===
-
-
-{::comment}
-* include some question like "why is this a cat?"
-    * this just shows that CNNs
-    * however... it is a good attention getter
-This post asks that question for CNNs.
-{:/comment}
 
 Try to answer this question:
 
-> Why do you think this is a cat?
+> Why is this a cat?
 
 <figure markdown="1">
 ![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center}
@@ -25,7 +17,8 @@ Try to answer this question:
 
 In other words: "How do you see?"
 Actually, I'm not so interested in how _you_ see, but rather how
-_computers_ see, cause they've gotten a lot better at doing that.
+_computers_ see, cause they've gotten a lot better at doing that
+and we don't quite understand it.
 For those coming to this blog who don't know, Convolutional Neural
 Networks are the models that have allowed computers to do reasonably
 well at a wide variety of visual tasks and we're still trying to understand how they do it.
@@ -69,6 +62,8 @@ shown). The first layer is the input (left, layer 0, 5 nodes) and the last is th
 The first hidden (middle) layer contains 3 nodes and the 2nd has 4. Each of the nodes
 is connected to all the nodes in the previous layer because it's searching for patterns in
 those nodes.
+
+TODO: be sure to mention the phrase "hierarchies of features" in bold
 
 <figure markdown="1">
 ![neural network](imgs/basic_nn.png){:.center}
@@ -119,7 +114,7 @@ We can describe how we play chess, but not how computers do it.
 But can we describe how we see?
 Now is a good time to try and answer the question I started with, which is repeated here:
 
-> Why do you think this is a cat?
+> Why is this a cat?
 
 <figure markdown="1">
 ![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center}
@@ -151,8 +146,146 @@ Now let's try to describe how CNNs see.
 Visualizing the Layers
 ---
 
+### How they work
+
+Now this gets researchy, but hopefully still comprehensible :)
+
 Especially since the ILSVRC challenge in 2012, lots of methods have been
-proposed to understand the patterns learned by CNNs.
+proposed to understand the patterns learned by CNNs. Some techniques
+try to address the mathematics of representations[^representation_math].
+These are important, but they give limited intuition about
+the kinds of patterns CNNs end up learning in practice, so they don't answer the question I'm asking.
+Another line of research has tried to first establish solid intuitions about the
+representations CNNs learn by visualizing the patterns different neurons
+are looking for. These will be the focus of the rest of the post.
+
+There are two major visualization ideas. This will get technical for a moment:
+
+1. __Optimization in Image Space__ (uses gradients)
+
+    Training a CNN is just adjusting the _patterns_ (free variables) neurons look for
+    in _images_ (fixed variables) so the neurons maximally activate some dependent neuron
+    (usually the output neuron corresponding to cat or some other class).
+    Instead, this visualization method adjusts _images_ (free variables)
+    so that the _patterns_ (fixed variables)
+    maximally activate some dependent neuron (e.g., the cat neuron).
+    Note that these methods start with a blank image and optimize from there instead
+    of starting with a real image and perturbing it, so these techniques are
+    __not image specific__. They simply ask "What image would the CNN like to see?"
+    (TODO: Is it just adversarial examples when you start with an image?)
+
+    Simonyan, Vedaldi, and Zisserman have done some [nice work](http://arxiv.org/abs/1312.6034)
+    with this method, as have [Mahendran and Vedaldi](http://arxiv.org/abs/1412.0035).
+    Some earlier work was done by [Erhan et. al.](http://www.iro.umontreal.ca/~lisa/publications2/index.php/attachments/single/207)
+    Here's a visualization which was generated to maximize the flamingo neuron using
+    this method.
+
+    <figure markdown="1">
+    ![flamingo](imgs/simonyan_flamingo.png){:.center}{: style="width: 50%"}
+    <figcaption markdown="1">
+    From figure 8 of [[Mahendran and Vedaldi](http://arxiv.org/abs/1412.0035)].
+    </figcaption>
+    </figure>
+
+2. __Gradients__ (just gradients, sort of)
+
+    Another technique tries to show how changing certain pixels
+    will change the desired neuron (again, e.g., the output neuron
+    corresponding to a cat). That is, it just visualizes the gradient
+    of a particular neuron with respect to the image. This
+    technique __is image specific__. It asks "Which pixels in this one particular
+    picture made the cat activation high?"
+
+    Actually, I lied. Visualizing the pure image gradients generates a not very satisfying
+    result, as shown in Simonyan, Vedaldi, and Zisserman [paper](http://arxiv.org/abs/1312.6034).
+    Zeiler and Fergus almost visualized the gradient, but they used a slightly
+    different function to compute the backward pass of the ReLU (explained in [Simonyan, Vedaldi, and Zisserman](http://arxiv.org/abs/1312.6034)
+    and quite expertly in the [extension](http://arxiv.org/abs/1412.6806) noted below).
+
+    Here, the methods have also asked about intermediate layers.
+    what makes other activations in intermediate
+    layers high, thus __visualizing patterns neurons
+    in _different_ layers are looking for__.
+
+    This deconv visualization was proposed by [Zeiler and Fergus](http://arxiv.org/abs/1311.2901).
+    A more [recent extension](http://arxiv.org/abs/1412.6806) by Springenberg, Dosovitskiy, Brox, and Riedmiller
+    is called guided bakprop. It refines the idea and makes it work for fully connected
+    layers (at least those in AlexNet) by adding another restriction to
+    the backward pass of the ReLU unit (their paper has an excellent explanation).
+
+I want to focus on the second method because it allows me to ask questions about __specific images__
+and __specific neurons__. There are some other cool techniques which I defer to the
+footnote at the end of this sentence so this blog doesn't drag on for too long[^other_vis].
+
+
+### Examples
+
+Now let's use guided backprop to visualize our CNN layer by layer, starting with
+`conv1`. Note that visualizations from previous methods of type 2 are much smaller
+because they crop out the sections of the image that gray (0 "gradient").
+I leave the whole image in tact, which means it's mostly gray, but the location
+information this preserves will be useful later. Here's layer `conv1`:
+
+<figure markdown="1">
+![neural network](imgs/basic_nn.png){:.center}
+<figcaption markdown="1">
+A simple Neural Network with 4 layers (including input and output).[^nn_diagram]
+</figcaption>
+</figure>
+
+
+
+TODO: mention that my vis are after the relu, not pooling
+
+TODO: use choice vis examples to show how we can't figure out why this is a cat
+
+TODO: be sure to include "cat's head"
+
+
+
+What the Visualizations don't say
+---
+
+All of these visualizations but the work I mention at the end of this section looks at patterns
+for one neuron or for a set of neurons, but doesn't look at how those patterns relate to one another.
+There are a couple problems:
+
+1. These visualizations _can_ sometimes confirm (qualitatively) that particular neurons or sets of neurons
+   select for concepts humans can label and relate like "cat's head" and "ear".
+
+2. This interpretation is limited to certain high level neurons.
+   We can see that middle layers of neurons might be useful, but we don't
+   really know why. They need to be related in specific ways to either
+   the gabor filters or the high level object parts, but we can't identify those ways.
+
+3. Even though we can relate some things in specific ways -- a cat's head and its ear --
+   we don't know for sure that the CNN is doing that (though it's a pretty reasonable guess :).
+   However, it could also be relating unknown parts in strange or (if you want to go that far) unwanted ways.
+   These visualizations don't say that the head is made up of pointy ears, a pink nose, whiskers, etc.
+
+These relationships are a fundamental part of the main intuition behind CNNs:
+that they learn __hierarchies of features__.
+Hierarchies are graphs with nodes _and_ edges. To understand hierarchies
+we need to talk about the edges.
+
+The one thing I've seen which does this
+is [DrawNet](http://people.csail.mit.edu/torralba/research/drawCNN/drawNet.html),
+from Antonio Torralba at MIT. This is a really neat visualization, which you should
+go check out (though perhaps later ;). It uses the empirical receptive fields from [this paper](http://arxiv.org/abs/1412.6856)
+about emerging object detectors along with a visualization that connects individual
+neurons that depend heavily on each other[^not_parcoord].
+However, it's still not image specific, so it can't answer the question.
+
+
+
+One way to Visualize the Edges
+---
+
+> Why is this a cat?
+
+<figure markdown="1">
+![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center}
+</figure>
 
 
 
@@ -166,95 +299,7 @@ Otherwise the feature maps are mostly blank.
 
 
 
-
-
-
-
-This is satisfying because it contrasts with past techniques. Instead
-of having CV specialists specify how to get information from pixels,
-CNNs learn how pixels relate to higher level concepts automatically.
-We just need to show them examples and they learn how to relate
-pixels to cats.
-
-Crucially, this happens in a series of steps, not just one.
-Each step takes some images and transforms them in to
-new images that are mostly blank, except in areas that contain
-visual patterns the CNN is looking for (out of, say, 100s of patterns).
-After a series of these transformations, something like the following pops out:
-
-TODO: show cat part visualizations
-
-
-
-TODO: tell them I was lying about what the feature maps look like
-
-
-stuff stuff stuff
-
-
-
-
-
-
-
-
-
-
-
-{::comment}
-* describe why CNNs are not well understood
-{:/comment}
-
-
-
-{::comment}
-* explain the problem with non-relational node-wise visualizations
-{:/comment}
-
-What the Visualizations don't say
----
-
-There have been many approaches to visualizing CNNs, but they all focus
-on the same question:
-
-
-> What do a particular set of neurons mean in image space?
-
-Deep neural networks are supposed to learn high level information,
-so this is a good question to ask.
-To some degree, visualizations have been able to answer this question.
-They can sometimes confirm that particular neurons or sets of neurons
-consistently respond to concepts like "dog's" head and not so much to
-other concepts[^2]. Here's another (ill posed) question we might be
-interested in answering:
-
-> Why is this a cat?
-
-Activation based visualizations will say this is a cat because the
-neuron whose visualization looks like a pointy ear fired. And the
-neuron which sees furry things fired and so did the neuron that
-detects paws. But why did those neurons fire?
-Clearly we know that certain
-
-* The question "Why is this a cat?" is just asking why a particular
-  neuron's activation is high. We can also ask why other neurons
-  have high activation ("Why is this a cat's eye?"). We can't answer
-  similar the questions for these other neurons in the same manner
-  as we answered the first question because there aren't any
-  labeled lower level neurons.
-
-* Perhaps the cat (TODO: better example; bus/car?) is only a cat because of context.
-  Again, this is great to know, but it breaks down between gabor filters (conv1)
-  and cat faces (conv4/conv5).
-  Could connection visualizations help reveal this?
-
-* Neuron visualizations don't give a sense of compositionality. How is layer l
-  activation computed from layer l-1 activation.
-
-* We don't really understand middle layers of neurons because we have nothing
-  to relate them to. We can relate them to the higher and lower layers
-  of visualizations, so perhaps by doing so we'll be able to understand them.
-
+TODO: cite correctly
 
 
 
@@ -264,8 +309,6 @@ Clearly we know that certain
     2. visualize paths of neurons
 {:/comment}
 
-How can we get them to say that?
----
 
 
 
@@ -306,6 +349,10 @@ When humans play chess we mainly look for patterns and can make only
 extremely limited progress trying to consider all possible future moves.
 
 
+P.S.: it comes with code (TODO)
+
+TODO: thank yous
+
 
 [^nn_intro]: Michael Neilsen's [book](http://neuralnetworksanddeeplearning.com/) is a good starting point for learning how
     Neural Networks work, as is Andrej Karpathy's code oriented [guide](http://karpathy.github.io/neuralnets/).
@@ -329,6 +376,27 @@ there are actually many subcategories for both dogs and cats.
 
 [^winston_vision]: Pat Winston has a nice [video](https://www.youtube.com/watch?v=gvmfbePC2pc) which describes
 one such method seeing (also part of his Artificial Intelligence course).
+
+[^representation_math]: TODO: talk about the mathematics of representations
+
+[^other_vis]: You can find how some other cool
+
+    You may also have heard of [Google's](http://googleresearch.blogspot.com/2015/06/inceptionism-going-deeper-into-neural.html)
+    [DeepDream](https://www.reddit.com/r/deepdream/).
+    This can be thought of as an image specific combination of the two
+    ideas that does a sort of optimization starting from a real image,
+    but meant to maximize a set of neurons instead of just one and applied to
+    different layers instead of just the output layer.
+
+    Another cool visualization tool is Jason Yosinski's [deepvis](http://yosinski.com/deepvis),
+    which uses a lot of the aforementioned techniques in one visualization tool.
+
+[^not_parcoord]: It looks like [parallel coordinates](https://syntagmatic.github.io/parallel-coordinates/),
+    but it's not really. The axes correspond layers of a CNN and the values on
+    each axis correspond to individual neurons. Placing neurons on an axis implies
+    an order (e.g., neuron 5 is greater than neuron 88), but no such ordering of
+    neurons in the same layer exists.
+
 
 
 
@@ -354,8 +422,37 @@ Lot's of ideas have been
 It's just something everyone with working eyes does. 
 
 
-Pause and take a moment to think about your answer.
-Here's mine:
+> Why is this a cat?
+
+Activation based visualizations will say this is a cat because the
+neuron whose visualization looks like a pointy ear fired. And the
+neuron which sees furry things fired and so did the neuron that
+detects paws. But why did those neurons fire?
+Clearly we know that certain
+
+* The question "Why is this a cat?" is just asking why a particular
+  neuron's activation is high. We can also ask why other neurons
+  have high activation ("Why is this a cat's eye?"). We can't answer
+  similar the questions for these other neurons in the same manner
+  as we answered the first question because there aren't any
+  labeled lower level neurons.
+
+* Perhaps the cat (TODO: better example; bus/car?) is only a cat because of context.
+  Again, this is great to know, but it breaks down between gabor filters (conv1)
+  and cat faces (conv4/conv5).
+  Could connection visualizations help reveal this?
+
+* Neuron visualizations don't give a sense of compositionality. How is layer l
+  activation computed from layer l-1 activation.
+
+* We don't really understand middle layers of neurons because we have nothing
+  to relate them to. We can relate them to the higher and lower layers
+  of visualizations, so perhaps by doing so we'll be able to understand them.
+
+
+
+
+
 
 
 
@@ -403,6 +500,9 @@ Points to make / Questions to ask
 
 * It would be cool if someone took these concrete examples and was able to
   implement a vision system without learning.
+
+* This allows us to look at patterns networks detect which we find very difficult
+  to talk about and name.
 
 
 Examples
