@@ -3,32 +3,27 @@ layout: blog
 title: Why is this a cat?
 comments: true
 disqus_developer: 1
-disqus_id: vis_blog
+disqus_id: cat_vis
 published: false
 ---
 
 Why is this a cat?
 ===
 
-Try to answer this question:
-
-> Why is this a cat?
-
 <figure markdown="1">
 ![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center}
 </figure>
 
-In other words: "How do you see?"
+In other words, "How do you recognize this cat?".
 Actually, I'm not so interested in how _you_ see, but rather how
-_computers_ see, cause they've gotten a lot better at doing that
-and we don't quite understand it.
+_computers_ see, because they've gotten a lot better at seeing
+and we don't fully understand how they do it.
 For those coming to this blog who don't know, Convolutional Neural
 Networks are the models that have allowed computers to do reasonably
-well at a wide variety of visual tasks and we're still trying to understand how they do it.
-There are a couple intuitions about how CNNs work, but it's hard
-to find good examples for some of them, so I'll try to do that
+well at a wide variety of visual tasks.
+There are some intuitions about how ConvNets work, but it can be hard
+to find examples of the intuitions, so I'll try to do that
 using some cool visualization techniques.
-
 
 {::comment}
 * about CNNs (short)
@@ -39,34 +34,31 @@ using some cool visualization techniques.
 (Convolutional) Neural Networks -- Building Layers of Patterns
 ---
 
-I don't intend to teach you how to implement Neural Networks (NNs) or Convolutional Neural
-Networks (CNNs). Others have done quite a good job of that in a variety of
-formats and to varying depths[^nn_intro]. However, I'll try to introduce the
-important concepts as I go along. I'll also get in to some detail, but I hope
-you can still understand the high points without it.
+Others have done quite a good job of introducing Neural Networks (NNs) and Convolution Neural Networks (ConvNets),
+so I won't spend much time on that.
+You can find a variety of pointers in the footnote at the end of this sentence[^nn_intro].
+However, I'll still try to introduce some
+important concepts as I go along.
 
 Though they've been around [since the '80s](https://en.wikipedia.org/wiki/Convolutional_neural_network#History),
-CNNs became really popular after faster computers and more data allowed them to win the ImageNet
+ConvNets became really popular after faster computers and more data allowed them to win the ImageNet
 Large Scale Visual Recognition Challenge in 2012.
 Since then, this type of model has gone from obscure to a fundamental part of Computer Vision.
 We've discovered they're pretty good at a lot more than telling you that an image contains a cat.
 
-To predict the content of images, CNNs transform an inputs image (the cat image)
-in multiple steps, represented as layers. The first layer, the input, corresponds to image pixels
+ConvNets transform an input (the cat image)
+in multiple steps represented as layers. The first layer, the input, corresponds to image pixels
 and the last layer, the output, has one number for each thing the image might contain (here, the
-1000 classes from the ILSVRC 2012 classes).
+1000 [classes from the ILSVRC 2012 challenge](http://image-net.org/challenges/LSVRC/2014/browse-synsets)).
 Each layer looks for patterns in its input, transforming them into new outputs
 where higher layers look for more complex patterns until the final layer produces
 outputs that correspond to whatever you're interested in (i.e., it labels the image a cat).
 
-A useful way to think of a neural network is in terms of the nodes that are looking for patterns.
+A useful way to think of a neural network in terms of the nodes -- called units or neurons --
+looking for or trying to detect patterns.
 Below is a network with 4 layers, each containing some nodes (though the input nodes aren't
-shown). The first layer is the input (left, layer 0, 5 nodes) and the last is the output (right, layer 3, 1 node).
-The first hidden (middle) layer contains 3 nodes and the 2nd has 4. Each of the nodes
-is connected to all the nodes in the previous layer because it's searching for patterns in
-those nodes.
-
-TODO: be sure to mention the phrase "hierarchies of features" in bold
+shown). On the left is the input with 5 nodes and on the right is the output with 1 node.
+The first hidden (middle) layer contains 3 nodes and the 2nd has 4.
 
 <figure markdown="1">
 ![neural network](imgs/basic_nn.png){:.center}
@@ -75,26 +67,38 @@ A simple Neural Network with 4 layers (including input and output).[^nn_diagram]
 </figcaption>
 </figure>
 
-In normal neural networks each node corresponds to a single number, but
-in CNNs the nodes are images. The network we'll be using (AlexNet) has
-9 layers (0 through 8) and each layer has hundreds of nodes. This scale
-(many layers, many nodes) is important for understanding images well.
+In normal neural networks each unit corresponds to a single number, but
+in ConvNets they correspond to images. The network we'll be using (AlexNet) has
+9 layers (0 through 8) and each layer has hundreds of neurons. This scale
+(many layers, many neurons) is important for understanding images well.
+
+The important bit for this article is the connections between units.
+Each unit is connected to all the
+units in the previous layer because it's searching for patterns in those units.
+Since there are layers of these, deeper (toward the output) units are
+looking at patterns of patterns of patterns....
+so each unit depends on the ones that came before it in a hierarchical fashion.
+The __hierarchies of neurons__ allow efficient
+representation of complex patterns in terms of simpler patterns.
 
 
-Something we Could Understand
+Something to Understand
 ---
 
-Crucially, the patterns in these systems are learned from examples.
-I show the system hundreds of thousands of cats, dogs,
-boats, birds, etc. and adjust the patterns seen by each neuron
-so that the last layer produces high activation only for the cat neuron
-when it sees a cat and high activation only for the dog neuron only
-when it sees a dog[^categories]. In one sense I understand exactly
-how the CNN works because I can implement it in code and train it
+Crucially, the patterns in these systems are learned from examples,
+and this is where our understanding of the system starts to fail.
+To train a ConvNet, we show it hundreds of thousands of cats, dogs,
+boats, birds, etc. and adjust the patterns seen by neurons at all layers
+so that the last layer says cat when the image contains a cat and not otherwise[^categories].
+This ability to get working system
+with only a vague specification makes the model possible, but it
+also means we sacrifice some understanding.
+In one sense I understand exactly
+how the CNN works because I can implement them in code and train it
 to make good predictions. In another sense I have no idea
-how the thing works because I don't know what patterns it's looking for.
+how the thing works because __I don't know what patterns it's looking for__.
 
-An interesting thing about CNNs is that there are even small parts
+An interesting thing about ConvNets is that there are even small bits
 we might be able to understand in the first place.
 Consider [Deep Blue](https://en.wikipedia.org/wiki/Deep_Blue_(chess_computer)),
 IBM's program which famously beat the reigning world champion at chess.
@@ -102,20 +106,18 @@ At some point a team of programmers coded the thing up, so they clearly know
 [how Deep Blue works](http://stanford.edu/~cpiech/cs221/apps/deepBlue.html).
 However, a similar problem to the CNN problem appears. If you ask one of
 the programmers to tell you why the machine made a particular move
-she can't tell you in a way that makes any sense to even the most seasoned chess player.
+she can't tell you in a way that fits into the understanding of
+even the most seasoned chess player.
 
-The thing is, there aren't any components like the neurons in a CNN which
-we might be able to understand. When asked to make a move Deep Blue searches
+There aren't any patterns to understand. When asked
+to make a move, Deep Blue searches
 through all possible future moves and has some rules to help it pick
 the best. There are a few nice algorithmic tricks and well chosen rules
-that allowed it to perform as well as it did, but _it didn't discover any patterns_
-that might help us intuitively understand how it plays chess.
+that allowed it to perform as well as it did, but the method doesn't
+fit into any human framework of understanding.
 
-On the other hand, humans can describe how they play chess. Lots of books
-have been written on the topic. 
-We can describe how we play chess, but not how computers do it.
-But can we describe how we see?
-Now is a good time to try and answer the question I started with, which is repeated here:
+On the other hand, humans can describe, and even teach how they play chess.
+It's harder to describe how we see.
 
 > Why is this a cat?
 
@@ -131,57 +133,68 @@ Here's my answer:
 > Furthermore, it has __whiskers__, and is quite __furry__.
 > Its expression is amusing, but has little to do with it being a cat.
 
-That's good, but the only direct input I have is light from my eyes.
-I don't have an ear sense, a furry sense, or a mouth sense. I have
-to process light to figure out that ears, fur, and a mouth are present.
-If you're tired of cats then you might also wonder about the visual
-elements of a [chair](http://arxiv.org/abs/1411.5928).
-Perhaps I can describe each of these parts in further detail
-until I can recursively describe each part in terms of the input.
-Evidence suggests this is at least _very hard_. Decades of research
-which tries to do this, and test it by implementing the resulting description in a computer,
-have failed to produce very good results[^winston_vision].
+That's a start, but it isn't precise enough.
+I can't use it to write an algorithm that sees because
+the description isn't in terms of any useful input.
+I don't (nor do computers) have a furry sense, an ear sense, or a mouth
+sense -- that's what vision gives me --
+yet I described what I see in terms of those fundamental components.
+It would be useful if I could recursively describe each of these
+parts in further detail until each complex visual pattern is __detailed in terms of the input__.
 
-Now let's try to describe how CNNs see.
+Evidence suggests this is at least _very hard_. Computer Vision is the name
+of the field which has been trying to do it for decades. Come up with a candidate description,
+test it by implementing it on a computer, fail, repeat[^winston_vision].
+
+However, ConvNets seem to be able to do it, so let's try to understand them.
 
 
-
-Visualizing the Layers
+Visualizing Individual Units
 ---
 
-### How they work
-
-Now this gets researchy, but hopefully still comprehensible :)
-
 Especially since the ILSVRC challenge in 2012, lots of methods have been
-proposed to understand the patterns learned by CNNs. Some techniques
-try to address the mathematics of representations[^representation_math].
-These are important, but they give limited intuition about
-the kinds of patterns CNNs end up learning in practice, so they don't answer the question I'm asking.
-Another line of research has tried to first establish solid intuitions about the
-representations CNNs learn by visualizing the patterns different neurons
-are looking for. These will be the focus of the rest of the post.
+proposed to understand the patterns learned by ConvNets.
+The kind of understanding I'm interested in is an intuitive understanding
+of why a ConvNet makes a particular choice. It's hard to describe how we
+see in words, but it seems even more futile for ConvNets.
+However, our precise computational understanding of ConvNets allows us
+to generate images with certain specific meanings. Fortunately, our visual
+system can often understand these visualizations and thereby
+understand something about ConvNets.
 
-There are two major visualization ideas. This will get technical for a moment:
+The next part gets researchy, so feel free to skip it.
+All you need to know is that we can generate images which highlight
+the pixels a particular neuron cares about so that changing those
+pixels in the original image would greatly effect the neuron's activation,
+but changing other pixels wouldn't have such a great effect.
+Thus visualizations relate neurons to pixel space.
+Make sure you visit the [examples](#examples) section to get an
+idea of what the visualizations mean, because that's the next step.
+
+### Ways to Visualize ConvNets
+
+There are two ways to generate visualizations:
 
 1. __Optimization in Image Space__ (uses gradients)
 
     Training a CNN is just adjusting the _patterns_ (free variables) neurons look for
-    in _images_ (fixed variables) so the neurons maximally activate some dependent neuron
-    (usually the output neuron corresponding to cat or some other class).
-    Instead, this visualization method adjusts _images_ (free variables)
-    so that the _patterns_ (fixed variables)
-    maximally activate some dependent neuron (e.g., the cat neuron).
+    in _images_ (fixed variables) so the neurons become more and more likely to
+    associate the patterns of a cat image with the label "cat".
+    Instead, this visualization method leaves _patterns_ alone (fixed variables)
+    and adjusts _images_ (free variables) so the neurons are more and more likely to see the patterns
+    they want to call "cat".
     Note that these methods start with a blank image and optimize from there instead
     of starting with a real image and perturbing it, so these techniques are
     __not image specific__. They simply ask "What image would the CNN like to see?"
+    {::comment}
     (TODO: Is it just adversarial examples when you start with an image?)
+    {:/comment}
 
     Simonyan, Vedaldi, and Zisserman have done some [nice work](http://arxiv.org/abs/1312.6034)
     with this method, as have [Mahendran and Vedaldi](http://arxiv.org/abs/1412.0035).
     Some earlier work was done by [Erhan et. al.](http://www.iro.umontreal.ca/~lisa/publications2/index.php/attachments/single/207)
-    Here's a visualization which was generated to maximize the flamingo neuron using
-    this method.
+    Here's a visualization which was generated to maximize the a flamingo recognizing neuron using
+    this method. You can clearly see "flamingo elements".
 
     <figure markdown="1">
     ![flamingo](imgs/simonyan_flamingo.png){:.center}{: style="width: 50%"}
@@ -193,32 +206,31 @@ There are two major visualization ideas. This will get technical for a moment:
 2. __Gradients__ (just gradients, sort of)
 
     Another technique tries to show how changing certain pixels
-    will change the desired neuron (again, e.g., the output neuron
-    corresponding to a cat). That is, it just visualizes the gradient
+    will change a desired neuron (again, e.g., a neuron trained to recognize cats)
+    That is, it just visualizes the gradient
     of a particular neuron with respect to the image. This
     technique __is image specific__. It asks "Which pixels in this one particular
     picture made the cat activation high?"
 
-    Actually, I lied. Visualizing the pure image gradients generates a not very satisfying
-    result, as shown in Simonyan, Vedaldi, and Zisserman [paper](http://arxiv.org/abs/1312.6034).
-    Zeiler and Fergus almost visualized the gradient, but they used a slightly
-    different function to compute the backward pass of the ReLU (explained in [Simonyan, Vedaldi, and Zisserman](http://arxiv.org/abs/1312.6034)
-    and quite expertly in the [extension](http://arxiv.org/abs/1412.6806) noted below).
+    Actually, I lied. Visualizing the pure image gradients generates is not very satisfying,
+    as shown in Simonyan, Vedaldi, and Zisserman [paper](http://arxiv.org/abs/1312.6034).
+    Zeiler and Fergus created a "deconv" visualization which is almost the gradient, but they
+    used a slightly different function to compute the backward pass of the
+    ReLU (explained in [Simonyan, Vedaldi, and Zisserman](http://arxiv.org/abs/1312.6034)
+    and quite clearly in the [guided backprop paper](http://arxiv.org/abs/1412.6806) detailed below).
 
-    Here, the methods have also asked about intermediate layers.
-    what makes other activations in intermediate
-    layers high, thus __visualizing patterns neurons
-    in _different_ layers are looking for__.
-
-    This deconv visualization was proposed by [Zeiler and Fergus](http://arxiv.org/abs/1311.2901).
+    [Deconv visualizations](http://arxiv.org/abs/1311.2901) by Zeiler and Fergus were the first to figure out this method.
     A more [recent extension](http://arxiv.org/abs/1412.6806) by Springenberg, Dosovitskiy, Brox, and Riedmiller
     is called guided bakprop. It refines the idea and makes it work for fully connected
     layers (at least those in AlexNet) by adding another restriction to
-    the backward pass of the ReLU unit (their paper has an excellent explanation).
+    the backward pass of the ReLU unit (again, their paper has an excellent explanation).
+    In contrast to the first type of visualization, these methods focus on intermediate layers
+    and individual neurons rather than output layers and the ConvNet as a whole.
 
-I want to focus on the second method because it allows me to ask questions about __specific images__
-and __specific neurons__. There are some other cool techniques which I defer to the
-footnote at the end of this sentence so this blog doesn't drag on for too long[^other_vis].
+The second method because allows questions about __specific images__
+and __specific neurons__, so we'll use it; specifically, we'll use guided backprop.
+There are some other cool techniques you can read about in the
+footnote at the end of this sentence[^other_vis].
 
 
 ### Examples
@@ -231,7 +243,7 @@ information this preserves will be useful later. Here's are visualizations of
 two neurons from `conv1`:
 
 <figure markdown="1">
-![conv1](imgs/conv1.svg){:.center}
+![conv1](imgs/conv1.png){:.center}
 <figcaption markdown="1">
 `conv1_4` and `conv1_65`
 </figcaption>
@@ -251,7 +263,7 @@ and red blobs). As you might already know, `conv1` learns to look for
 simple features like oriented edges and colored blobs.
 
 <figure markdown="1">
-![conv2](imgs/conv2.svg){:.center}
+![conv2](imgs/conv2.png){:.center}
 <figcaption markdown="1">
 `conv2_174` and `conv2_69`
 </figcaption>
@@ -267,7 +279,7 @@ lines that go up slightly to the left. Note how it's invariant to
 context (shower tiles, arm band, bowl).
 
 <figure markdown="1">
-![conv5 and conv4](imgs/conv4_conv5.svg){:.center}
+![conv5 and conv4](imgs/conv4_conv5.png){:.center}
 <figcaption markdown="1">
 `conv5_137` and `conv4_269`
 </figcaption>
@@ -302,7 +314,7 @@ There are a couple problems:
    However, it could also be relating unknown parts in strange or (if you want to go that far) unwanted ways.
    These visualizations don't say that the head is made up of pointy ears, a pink nose, whiskers, etc.
 
-These relationships are a fundamental part of the main intuition behind CNNs:
+These relationships are a fundamental part of the main intuition behind ConvNets:
 that they learn __hierarchies of features__.
 Hierarchies are graphs with nodes _and_ edges. To understand hierarchies
 we need to talk about the edges.
@@ -564,10 +576,10 @@ I've been talking about how to understand images.
 
 * conclusion
     * talk about ways to know how a thing works... contrast intuitions and mathematical understanding... one preceeds the other
-    * talk about being able to understand CNNs vs being able to understand 
-        * perhaps we understood HOG better, but somehow we can understand CNNs better because it more closely maps to our visual system
+    * talk about being able to understand ConvNets vs being able to understand 
+        * perhaps we understood HOG better, but somehow we can understand ConvNets better because it more closely maps to our visual system
 
-One cool thing about CNNs is that __there is complexity__ and we
+One cool thing about ConvNets is that __there is complexity__ and we
 can try to understand it, especially if we enlist the aid of human vision through visualization.
 This is not at all the case for Deep Blue.
 That program worked by approximately enumerating possible chess games
@@ -598,12 +610,12 @@ Here are a couple more interesting relations.
 
 [^nn_intro]:
     Andrej Karpathy's recent [blog](http://karpathy.github.io/2015/10/25/selfie/) is a blog length introduction
-    CNNs for a wide audience. Also see [this](https://www.youtube.com/watch?v=bHvf7Tagt18)
+    ConvNets for a wide audience. Also see [this](https://www.youtube.com/watch?v=bHvf7Tagt18)
     introduction to Machine Learning and Deep Learning from Google.
 
-    For more technical details on NNs and CNNs, try Michael Neilsen's [book](http://neuralnetworksanddeeplearning.com/),
+    For more technical details on NNs and ConvNets, try Michael Neilsen's [book](http://neuralnetworksanddeeplearning.com/),
     Andrej Karpathy's code oriented [guide](http://karpathy.github.io/neuralnets/), or 
-    one of Chris Olah's [blogs about CNNs](http://colah.github.io/posts/2014-07-Conv-Nets-Modular/).
+    one of Chris Olah's [blogs about ConvNets](http://colah.github.io/posts/2014-07-Conv-Nets-Modular/).
     Pat Winston also has a [lecture about neural networks](https://www.youtube.com/watch?v=q0pm3BrIUFo) in his
     intro Artificial Intelligence course.
 
@@ -615,13 +627,13 @@ Here are a couple more interesting relations.
     {:/comment}
 
 [^nn_diagram]: This image comes from [chapter 1](http://neuralnetworksanddeeplearning.com/chap1.html) of
-Neural Networks and Deep Learning (Michael Neilsen's book).
+    Neural Networks and Deep Learning (Michael Neilsen's book).
 
 [^categories]: Since the network was trained on the [ILSVRC classes](http://image-net.org/challenges/LSVRC/2014/browse-synsets)
-there are actually many subcategories for both dogs and cats.
+    there are actually many subcategories for both dogs and cats.
 
-[^winston_vision]: Pat Winston has a nice [video](https://www.youtube.com/watch?v=gvmfbePC2pc) which describes
-one such method seeing (also part of his Artificial Intelligence course).
+[^winston_vision]: Pat Winston has a nice [video](https://www.youtube.com/watch?v=gvmfbePC2pc) about
+    one such attempt to hard code an algorithm for vision.
 
 [^representation_math]: TODO: talk about the mathematics of representations
 

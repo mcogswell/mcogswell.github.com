@@ -24,10 +24,10 @@
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="238.85496"
+     inkscape:cx="157.28514"
      inkscape:cy="161.95095"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -176,7 +176,9 @@ CiiigAooooAKKKKACiiigAooooAKKKKACiiimAUlFFAgooooA//Z
 "
        preserveAspectRatio="none"
        height="227"
-       width="227" />
+       width="227"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <image
        y="510.07648"
        x="317.35715"
