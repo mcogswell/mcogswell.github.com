@@ -610,24 +610,43 @@ that have been around for a while.
 
 > circular blob + black and white grid + colored edge + ... = small dot
 
-This sort of worked. The parts represented by a neuron's visualization and
-that of the neuron in the layer above 
 
-Although the man
-
-There was a lot of redundancy
-
+The visualizations sort of answered why the CNN called the image a cat.
+The concepts represented by a neuron's visualization and
+that of its parent typically fit together well. You can see how one is
+composed of the other. However, the visualizations, our capcity to understand
+them, or the network breaks down at some point. The most prevelent observation
+is the amount of redundancy between layers. For example, multiple layers seem to contain
+more than one face detector. It's not clear whether 
+the visualizations aren't good enough to distinguish between features that really aren't
+redundant, the network learns redundant features, or whether the interpreters don't recognize the unique
+portions of the visualizations.
 
 
 Conclusion
 ---
 
-> Why is this a cat?
+In this post I explored how we understand ConvNets through visualization.
+We tend to focus on individual neurons, but not how they relate to other neurons.
+The latter part is essential because ConvNets are supposed work by learning to
+compose complex features from simpler ones. The second part of the blog proposed a
+way to combine existing visualizations in a way that relates units across layes
+in a neural network.
 
-<figure markdown="1">
-![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center}
-</figure>
 
+
+{::comment}
+The redundancy is much more prevelant with this method because redundant features
+tend to simultaneously be top activations.
+It may have been present before, though not noticable to the same degree
+
+
+It would be nice if all the reconstruction patches were not pictures of dogs.
+Visualizations of a CNN trained with more visually balanced classes
+might help.
+
+
+how to focus visualizations on fine grained classification?
 
 
 I've been talking about how to understand images.
@@ -652,141 +671,6 @@ extremely limited progress trying to consider all possible future moves.
 and it might even be close to how we understand the visual world (it discovers parts and we tried to describe the world in parts).
 
 still don't know how to relate fc8 to fc6
-
-
-P.S.: it comes with code (TODO)
-
-TODO: thank yous
-
-
-
-More Examples
----
-
-Here are a couple more interesting relations.
-
-![A cat!](imgs/cat_conv5_159.png)
-{:.zoom_img}
-
-
-
-
-[^nn_intro]:
-    Andrej Karpathy's recent [blog](http://karpathy.github.io/2015/10/25/selfie/) is a blog length introduction
-    ConvNets for a wide audience. Also see [this](https://www.youtube.com/watch?v=bHvf7Tagt18)
-    introduction to Machine Learning and Deep Learning from Google.
-
-    For more technical details on NNs and ConvNets, try Michael Neilsen's [book](http://neuralnetworksanddeeplearning.com/),
-    Andrej Karpathy's code oriented [guide](http://karpathy.github.io/neuralnets/), or 
-    one of Chris Olah's [blogs about ConvNets](http://colah.github.io/posts/2014-07-Conv-Nets-Modular/).
-    Pat Winston also has a [lecture about neural networks](https://www.youtube.com/watch?v=q0pm3BrIUFo) in his
-    intro Artificial Intelligence course.
-
-    I learned the basics from Andrew Ng's Coursera [course](https://www.coursera.org/learn/machine-learning) on Machine Learning
-    and Geoffrey Hinton's [course](https://www.coursera.org/course/neuralnets) that dives a bit deeper into Neural Networks.
-
-    {::comment}
-    TODO: also, [this](https://www.youtube.com/watch?v=bHvf7Tagt18)
-    {:/comment}
-
-[^nn_diagram]: This image comes from [chapter 1](http://neuralnetworksanddeeplearning.com/chap1.html) of
-    Neural Networks and Deep Learning (Michael Neilsen's book).
-
-[^categories]: Since the network was trained on the [ILSVRC classes](http://image-net.org/challenges/LSVRC/2014/browse-synsets)
-    there are actually many subcategories for both dogs and cats.
-
-[^winston_vision]: Pat Winston has a nice [video](https://www.youtube.com/watch?v=gvmfbePC2pc) about
-    one such attempt to hard code an algorithm for vision.
-
-[^representation_math]: TODO: talk about the mathematics of representations
-
-[^other_vis]: You can find how some other cool
-
-    You may also have heard of [Google's](http://googleresearch.blogspot.com/2015/06/inceptionism-going-deeper-into-neural.html)
-    [DeepDream](https://www.reddit.com/r/deepdream/).
-    This can be thought of as an image specific combination of the two
-    ideas that does a sort of optimization starting from a real image,
-    but meant to maximize a set of neurons instead of just one and applied to
-    different layers instead of just the output layer.
-
-    Another cool visualization tool is Jason Yosinski's [deepvis](http://yosinski.com/deepvis),
-    which uses a lot of the aforementioned techniques in one visualization tool.
-
-[^not_parcoord]: It looks like [parallel coordinates](https://syntagmatic.github.io/parallel-coordinates/),
-    but it's not really. The axes correspond layers of a CNN and the values on
-    each axis correspond to individual neurons. Placing neurons on an axis implies
-    an order (e.g., neuron 5 is greater than neuron 88), but no such ordering of
-    neurons in the same layer exists.
-
-[^saturate]: This tends to saturate visualizations, especially as they
-    grow further from the root activation. I couldn't find simple rule that consistently
-    prevented saturating, but I found the saturated versions still work work well enough.
-    Let me know if you come up with something.
-
-
-
-Notes
-===
-
-
-
-
-TODO: put picture of cat
-
-Done? Excellent! Here's what I said:
-
-> This picture has some pointy ears. They're triangle shaped on the top and the
-> outline has a furry look to it. Below the ears are a pair of eyes.
-> TODO: finish
-
-Your description probably 
-
-Lot's of ideas have been
-
-It's just something everyone with working eyes does. 
-
-
-> Why is this a cat?
-
-Activation based visualizations will say this is a cat because the
-neuron whose visualization looks like a pointy ear fired. And the
-neuron which sees furry things fired and so did the neuron that
-detects paws. But why did those neurons fire?
-Clearly we know that certain
-
-* The question "Why is this a cat?" is just asking why a particular
-  neuron's activation is high. We can also ask why other neurons
-  have high activation ("Why is this a cat's eye?"). We can't answer
-  similar the questions for these other neurons in the same manner
-  as we answered the first question because there aren't any
-  labeled lower level neurons.
-
-* Perhaps the cat (TODO: better example; bus/car?) is only a cat because of context.
-  Again, this is great to know, but it breaks down between gabor filters (conv1)
-  and cat faces (conv4/conv5).
-  Could connection visualizations help reveal this?
-
-* Neuron visualizations don't give a sense of compositionality. How is layer l
-  activation computed from layer l-1 activation.
-
-* We don't really understand middle layers of neurons because we have nothing
-  to relate them to. We can relate them to the higher and lower layers
-  of visualizations, so perhaps by doing so we'll be able to understand them.
-
-
-
-
-
-
-TODO: cite correctly
-
-TODO: mention that my vis are after the relu, not pooling
-
-TODO: use choice vis examples to show how we can't figure out why this is a cat
-
-TODO: be sure to include "cat's head"
-
-TODO: point out that fc* vis always look the same
 
 
 
@@ -839,9 +723,83 @@ Points to make / Questions to ask
   to talk about and name.
 
 
-Examples
+
+
+
+
+P.S.: it comes with code (TODO)
+
+TODO: thank yous
+
+
+
+More Examples
 ---
 
+Here are a couple more interesting relations.
+
+![A cat!](imgs/cat_conv5_159.png)
+{:.zoom_img}
+
+{:/comment}
+
+
+
+
+[^nn_intro]:
+    Andrej Karpathy's recent [blog](http://karpathy.github.io/2015/10/25/selfie/) is a blog length introduction
+    ConvNets for a wide audience. Also see [this](https://www.youtube.com/watch?v=bHvf7Tagt18)
+    introduction to Machine Learning and Deep Learning from Google.
+
+    For more technical details on NNs and ConvNets, try Michael Neilsen's [book](http://neuralnetworksanddeeplearning.com/),
+    Andrej Karpathy's code oriented [guide](http://karpathy.github.io/neuralnets/), or 
+    one of Chris Olah's [blogs about ConvNets](http://colah.github.io/posts/2014-07-Conv-Nets-Modular/).
+    Pat Winston also has a [lecture about neural networks](https://www.youtube.com/watch?v=q0pm3BrIUFo) in his
+    intro Artificial Intelligence course.
+
+    I learned the basics from Andrew Ng's Coursera [course](https://www.coursera.org/learn/machine-learning) on Machine Learning
+    and Geoffrey Hinton's [course](https://www.coursera.org/course/neuralnets) that dives a bit deeper into Neural Networks.
+
+[^nn_diagram]: This image comes from [chapter 1](http://neuralnetworksanddeeplearning.com/chap1.html) of
+    Neural Networks and Deep Learning (Michael Neilsen's book).
+
+[^categories]: Since the network was trained on the [ILSVRC classes](http://image-net.org/challenges/LSVRC/2014/browse-synsets)
+    there are actually many subcategories for both dogs and cats.
+
+[^winston_vision]: Pat Winston has a nice [video](https://www.youtube.com/watch?v=gvmfbePC2pc) about
+    one such attempt to hard code an algorithm for vision.
+
+[^other_vis]: You can find how some other cool
+
+    You may also have heard of [Google's](http://googleresearch.blogspot.com/2015/06/inceptionism-going-deeper-into-neural.html)
+    [DeepDream](https://www.reddit.com/r/deepdream/).
+    This can be thought of as an image specific combination of the two
+    ideas that does a sort of optimization starting from a real image,
+    but meant to maximize a set of neurons instead of just one and applied to
+    different layers instead of just the output layer.
+
+    Another cool visualization tool is Jason Yosinski's [deepvis](http://yosinski.com/deepvis),
+    which uses a lot of the aforementioned techniques in one visualization tool.
+
+[^not_parcoord]: It looks like [parallel coordinates](https://syntagmatic.github.io/parallel-coordinates/),
+    but it's not really. The axes correspond layers of a CNN and the values on
+    each axis correspond to individual neurons. Placing neurons on an axis implies
+    an order (e.g., neuron 5 is greater than neuron 88), but no such ordering of
+    neurons in the same layer exists.
+
+[^saturate]: This tends to saturate visualizations, especially as they
+    grow further from the root activation. I couldn't find simple rule that consistently
+    prevented saturating, but I found the saturated versions still work work well enough.
+    Let me know if you come up with something.
+
+
+
+
+{::comment}
+
+Examples
+---
+TODO: include examples of other types of things
 license plate and text detection
 http://werbos.ece.vt.edu:5000/vis/COCO_train2014_000000359320.jpg?blob_name=conv5&act_id=243
 
@@ -853,18 +811,7 @@ http://werbos.ece.vt.edu:5000/vis/ILSVRC2012_val_00033331.JPEG?blob_name=conv5&a
 cat pointy ear conv5 blob
 http://werbos.ece.vt.edu:5000/vis/cat.jpg?blob_name=conv5&act_id=159
 conv5_159 -> conv4_356 -> conv3_228 (upper left ear) and conv3_227 (lower right ear)
-
-
-![A cat!](imgs/cat_conv5_159_2.png)
-{:.zoom_img}
-
-
-
-[^1]: See [this](http://colah.github.io/posts/2014-07-Conv-Nets-Modular/) nice introduction by Chris Olah 
-
-[^2]: emerging object detectors (TODO)
-
-[^AlexNet]: [AlexNet](http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf)
+{:/comment}
 
 
 
