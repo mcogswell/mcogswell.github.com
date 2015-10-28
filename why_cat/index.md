@@ -2,9 +2,9 @@
 layout: blog
 title: Why is this a cat? (part 1)
 comments: true
-disqus_developer: 1
+disqus_developer: 0
 disqus_id: why_cat
-published: false
+published: true
 ---
 
 Why is this a cat?
