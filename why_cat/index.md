@@ -436,4 +436,3 @@ figure figcaption {
     -o-transform:scale(2);
 }
 </style>
-{::options parse_block_html="true" /}
