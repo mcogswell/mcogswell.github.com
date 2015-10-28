@@ -59,9 +59,9 @@ The first hidden (middle) layer contains 3 nodes and the 2nd has 4.
 
 <figure markdown="1">
 ![neural network](imgs/basic_nn.png){:.center}
-<figcaption markdown="1">
-A simple Neural Network with 4 layers (including input and output).[^nn_diagram]
-</figcaption>
+<p markdown="1">
+A simple Neural Network with 4 layers (including input and output)[^nn_diagram].
+</p>
 </figure>
 
 In normal neural networks each unit corresponds to a single number, but
@@ -198,9 +198,9 @@ So far we have two ways to generate visualizations:
 
     <figure markdown="1">
     ![flamingo](imgs/simonyan_flamingo.png){:.center}{: style="width: 50%"}
-    <figcaption markdown="1">
+    <p markdown="1">
     From figure 8 of [[Mahendran and Vedaldi](http://arxiv.org/abs/1412.0035)].
-    </figcaption>
+    </p>
     </figure>
 
 2. __Gradients__ (just gradients, sort of)
@@ -243,9 +243,9 @@ layer `conv1` (after the ReLU, but not after pooling):
 
 <figure markdown="1">
 ![conv1](imgs/conv1.png){:.center}
-<figcaption markdown="1">
+<p markdown="1">
 `conv1_4` and `conv1_65`
-</figcaption>
+</p>
 </figure>
 {:.zoom_img}
 
@@ -270,9 +270,9 @@ gray and insignificant, but location information is preserved.
 
 <figure markdown="1">
 ![conv2](imgs/conv2.png){:.center}
-<figcaption markdown="1">
+<p markdown="1">
 `conv2_174` and `conv2_69`
-</figcaption>
+</p>
 </figure>
 {:.zoom_img}
 
@@ -291,9 +291,9 @@ images relate to pixels.
 
 <figure markdown="1">
 ![conv5 and conv4](imgs/conv4_conv5.png){:.center}
-<figcaption markdown="1">
+<p markdown="1">
 `conv5_137` and `conv4_269`
-</figcaption>
+</p>
 </figure>
 {:.zoom_img}
 
@@ -419,7 +419,7 @@ I'll try to investigate the edges in my next post.
     display: block;
 }
 
-figure figcaption {
+figure p {
     text-align: center;
 }
 
