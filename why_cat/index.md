@@ -349,7 +349,6 @@ I'll try to investigate the edges in my next post.
     by picking its class from 1000 possible classes. The dataset that comes with the challenge
     because of its scale; it has _millions_ of labeled images.
 
-
 [^nn_intro]:
     Andrej Karpathy's recent [blog](http://karpathy.github.io/2015/10/25/selfie/) is a blog length introduction
     ConvNets for a wide audience. Also see [this](https://www.youtube.com/watch?v=bHvf7Tagt18)
@@ -391,7 +390,7 @@ I'll try to investigate the edges in my next post.
     from Antonio Torralba at MIT. This is a really neat visualization, which you should
     go check out (though perhaps later ;). It uses the empirical receptive fields from [this paper](http://arxiv.org/abs/1412.6856)
     about emerging object detectors along with a visualization that connects individual
-    neurons that depend heavily on each other[^not_parcoord].
+    neurons that depend heavily on each other.
     However, it's still not image specific, so it can only say how a ConvNet
     would like to relate some parts to others without even knowing which neurons
     are likely to fire together.
