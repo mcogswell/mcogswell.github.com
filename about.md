@@ -70,3 +70,9 @@ I'm still fairly new to the field, so all this could change in a couple years :)
 [devi_page]: https://filebox.ece.vt.edu/~parikh/
 [cv_lecture1]: https://filebox.ece.vt.edu/~F13ECE5554/lectures/parikh_lecture1_intro.pptx
 [cv_intro_course]: https://filebox.ece.vt.edu/~F13ECE5554/
+
+
+This Site
+===
+This site is hosted by [github pages](https://pages.github.com/) using a
+template based on [Lanyon](http://lanyon.getpoole.com/).
