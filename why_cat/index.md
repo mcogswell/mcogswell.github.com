@@ -437,3 +437,10 @@ figure figcaption {
 }
 </style>
 {::options parse_block_html="true" /}
+<script>
+// create <figure> with caption from <p><img>
+$('article p img').unwrap().wrap('<figure></figure>').after(function() {
+    return '<figcaption>'+this.alt+'</figcaption>';
+});
+</script>
+{::options parse_block_html="true" /}
