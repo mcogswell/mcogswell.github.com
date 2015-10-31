@@ -14,12 +14,11 @@ which I wrote to find out more about what I do.
 
 Apart from research, I've been an active fencer since 2005, competing in
 club collegiate tournaments and USFA events (mostly in the
-[Virginia Division][vadiv]). I'm currently a [C2014][ratings] in foil.
+[Virginia Division][vadiv]). I'm currently a C2014 in foil.
 Check out the [VT fencing page][vtfencing] if you're interested in
 fencing at Virginia Tech.
 
 [vadiv]: http://va-usfa.com/
-[ratings]: http://en.wikipedia.org/wiki/United_States_Fencing_Association#Ratings
 [vtfencing]: http://www.fencing.org.vt.edu/
 
 
