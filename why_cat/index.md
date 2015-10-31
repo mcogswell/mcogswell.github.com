@@ -14,16 +14,16 @@ Why is this a cat?
 ![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center}
 </figure>
 
-In other words, "How do you recognize this cat?".
+In other words, "How do you recognize this cat?"
 Actually, I'm not so interested in how _you_ see, but rather how
 _computers_ see, because they've gotten a lot better at seeing
 and we don't fully understand how they do it.
 For those coming to this blog who don't know, Convolutional Neural
-Networks are the models that have allowed computers to do reasonably
+Networks (ConvNets) are the models that have allowed computers to do reasonably
 well at a wide variety of visual tasks.
 There are some intuitions about how ConvNets work, but it can be hard
-to find examples of them. This post is part 1 of 2.
-Now I'll tell you about Convolutional Neural Networks, some work others
+to find examples of them. This is the first of two posts.
+In this first part I'll tell you about Convolutional Neural Networks, some work others
 have done to gain intuition about them, and some opportunities these
 approaches miss. The next post will introduce
 a new visualization technique to help gain more intuition.
@@ -31,7 +31,7 @@ a new visualization technique to help gain more intuition.
 (Convolutional) Neural Networks -- Building Layers of Patterns
 ---
 
-Others have done quite a good job of introducing Neural Networks (NNs) and Convolution Neural Networks (ConvNets),
+Others have done quite a good job of introducing Neural Networks (NNs) and ConvNets,
 so I won't spend much time on that.
 You can find a variety of pointers in the footnote at the end of this sentence[^nn_intro].
 I'll still try to introduce the
@@ -45,14 +45,14 @@ We've discovered they're pretty good at a lot more than telling you an image con
 
 ConvNets work by transforming an input (the cat image)
 in multiple steps or layers. The first layer, the input, corresponds to image pixels
-and the last layer, the output, has one number for each object class the image might contain (here, the
+and the last layer, the output, has one number for each object class the image might contain (the
 1000 [classes from the ILSVRC 2012 challenge](http://image-net.org/challenges/LSVRC/2014/browse-synsets)).
 Each layer looks for patterns in its input, transforming them into new outputs
 where higher layers look for more complex patterns until the final layer produces
 outputs that correspond to whatever you're interested in (i.e., it labels the image a cat).
 
-A useful way to think of a neural network in terms of the nodes -- called units or neurons --
-which look for or trying to detect patterns.
+A useful way to think of a neural network is in terms of the nodes -- called units or neurons --
+which _look for or try to detect patterns_.
 Below is a network with 4 layers, each containing some nodes (though the input nodes aren't
 shown). On the left is the input with 5 nodes and on the right is the output with 1 node.
 The first hidden (middle) layer contains 3 nodes and the 2nd has 4.
@@ -67,10 +67,11 @@ in ConvNets they correspond to images. The network we'll be using (AlexNet) has
 9 layers (0 through 8) and each layer has hundreds of neurons. This scale
 (many layers, many neurons) is important for understanding images well.
 
-The important bit for this article is the connections between units.
+The important idea for this article is the connections between units.
 Each unit is connected to all the
-units in the previous layer because it's searching for patterns in those units.
-Since there are layers of these, deeper (toward the output) units are
+units in the previous layer so it can search for patterns in those units
+and become highly active when it sees the patterns it's looking for.
+Since there are multiple layers, deeper (toward the output) units are
 looking at patterns of patterns of patterns....
 so each unit depends on the ones that came before it in a hierarchical fashion.
 The __hierarchies of neurons__ allow efficient
@@ -83,25 +84,25 @@ Something we Don't Know
 Crucially, the patterns in these systems are learned from examples,
 and this is where our understanding of the system starts to fail.
 To train a ConvNet, we show it hundreds of thousands of cats, dogs,
-boats, birds, etc. and adjust the patterns seen by neurons at all layers
+boats, birds, etc., and adjust the patterns seen by neurons at all layers
 so that the last layer says cat when the image contains a cat and not otherwise[^categories].
 This ability to get a working system
-from only a vague specification makes the model possible, humans
-couldn't manually specify all the patterns, but it
+from only a vague specification makes the model possible -- humans
+couldn't manually specify all the patterns -- but it
 also means we sacrifice some understanding.
 In one sense I understand exactly
-how the CNNs work because I can implement them in code and they
+how the ConvNets work because I can implement them in code and they
 make good predictions once trained.
 In another sense I have no idea
-how the things work because __I don't know what patterns they're looking for__.
+how the things work because _I don't know what patterns they're looking for_.
 
-An interesting thing about ConvNets is that there are even small bits
-we might be able to understand in the first place.
+An interesting thing about ConvNets is that it even has small bits
+which we might be able to intuit.
 Consider [Deep Blue](https://en.wikipedia.org/wiki/Deep_Blue_(chess_computer)),
 IBM's program which famously beat the reigning world champion at chess.
 At some point a team of programmers coded the thing up, so they clearly know
 [how Deep Blue works](http://stanford.edu/~cpiech/cs221/apps/deepBlue.html).
-However, a similar problem to the CNN problem appears. If you ask one of
+However, a similar problem to the ConvNets problem appears. If you ask one of
 the programmers to tell you why the machine made a particular move
 she can't tell you in a way that fits into the understanding of
 even the most seasoned chess player.
@@ -109,9 +110,11 @@ even the most seasoned chess player.
 There aren't any patterns to understand. When asked
 to make a move, Deep Blue searches
 through all possible future moves and has some rules to help it pick
-the best. There are a few nice algorithmic tricks and well chosen rules
-that allowed it to perform as well as it did, but the method doesn't
-fit into any human framework of understanding.
+the best. By itself this would be impossible, but there 
+are a few nice algorithmic tricks and well chosen rules
+that allowed it to perform as well as it did. However, those tricks
+fit into a human understanding of how to play chess in the same way
+the brute force method fits into such an understanding: they don't.
 
 On the other hand, humans can describe, and even teach how they play chess.
 It's harder to describe how we see.
@@ -149,7 +152,7 @@ However, ConvNets seem to be able to do it, so let's try to understand them.
 Visualizing Individual Units
 ---
 
-Especially since the ILSVRC challenge in 2012, lots of methods have been
+Especially since the ILSVRC challenge in 2012, many methods have been
 proposed to understand the patterns learned by ConvNets.
 The kind of understanding I'm interested in is an intuitive understanding
 of why a ConvNet makes a particular choice. It's hard to describe how we
@@ -160,7 +163,7 @@ system can often understand these visualizations and thereby
 understand something about ConvNets.
 
 The next part gets researchy, so you can skip it if you get lost.
-All you need to know is that we can generate images which highlight
+All you need to know is that we can generate images that highlight
 the pixels a particular neuron cares about so that changing those
 pixels in the original image would greatly effect the neuron's activation,
 but changing other pixels wouldn't have such a great effect.
@@ -174,15 +177,15 @@ So far we have two ways to generate visualizations:
 
 1. __Optimization in Image Space__ (uses gradients)
 
-    Training a CNN is just adjusting the _patterns_ (free variables) neurons look for
+    Training a ConvNet is just adjusting the _patterns_ (free variables) that neurons look for
     in _images_ (fixed variables) so the neurons become more and more likely to
-    associate the patterns of a cat image with the label "cat".
-    Instead, this visualization method leaves _patterns_ alone (fixed variables)
+    associate the patterns of a cat image with the label "cat."
+    Instead, this visualization method leaves _patterns_ (fixed variables) alone
     and adjusts _images_ (free variables) so the neurons are more and more likely to see the patterns
     they want to call "cat".
     Note that these methods start with a blank image and optimize from there instead
     of starting with a real image and perturbing it, so these techniques are
-    __not image specific__. They simply ask "What image would the CNN like to see?"
+    __not image specific__. They simply ask "What image would the ConvNet like to see?"
     {::comment}
     (TODO: Is it just adversarial examples when you start with an image?)
     {:/comment}
@@ -190,8 +193,8 @@ So far we have two ways to generate visualizations:
     Simonyan, Vedaldi, and Zisserman have done some [nice work](http://arxiv.org/abs/1312.6034)
     with this method, as have [Mahendran and Vedaldi](http://arxiv.org/abs/1412.0035).
     Some earlier work was done by [Erhan et. al.](http://www.iro.umontreal.ca/~lisa/publications2/index.php/attachments/single/207)
-    Here's a visualization which was generated to maximize the a flamingo recognizing neuron using
-    this method. You can clearly see "flamingo elements". I wouldn't call the thing
+    Here's a visualization which was generated to maximize the flamingo recognizing neuron using
+    this method. You can clearly see "flamingo elements." I wouldn't call the thing
     a flamingo, but our ConvNet would.
 
     <figure markdown="1">
@@ -202,13 +205,13 @@ So far we have two ways to generate visualizations:
 2. __Gradients__ (just gradients, sort of)
 
     Another technique tries to show how changing certain pixels
-    will change a desired neuron (again, e.g., a neuron trained to recognize cats)
+    will change a desired neuron (again, e.g., a neuron trained to recognize cats).
     That is, it just visualizes the gradient
     of a particular neuron with respect to the image. This
     technique __is image specific__. It asks "Which pixels in this one particular
     picture made the cat activation high?"
 
-    Actually, I lied. Visualizing the pure image gradients generates is not very satisfying,
+    Actually, I lied. Visualizing the pure gradients generates is not very satisfying,
     as shown in Simonyan, Vedaldi, and Zisserman [paper](http://arxiv.org/abs/1312.6034).
     Zeiler and Fergus created a "deconv" visualization which is mathematically similar to the gradient image,
     except it uses a slightly different function to compute the backward pass of the
@@ -247,15 +250,18 @@ The top of each side contains one of the "gradient" images the
 method produces, which means that changing the non-gray pixels
 in the original image will likely raise the activation of the corresponding neuron (`conv1_4` or `conv_65`).
 It's sometimes hard to determine exactly what semantic feature
-of the highlighted pixels the CNN
-responds to, so the bottom images help with that. The right sides of these images
-show "gradient" patches from other images which highly activate the same neuron
+of the highlighted pixels the ConvNet
+responds to, so the bottom images help with that.
+These show two grids of patches which are chosen from 1000s
+of potential images instead just Grumpy Cat.
+The right sides of these images
+show "gradient" patches which highly activate the same neuron
 (black diagonals and red blobs).
-The left sides show the same patches cropped from the original images.
+The left sides show the corresponding patches cropped from the original images.
 As some readers probably already know, `conv1` learns to look for
 simple features which are easy to relate to pixels -- e.g., oriented edges and colored blobs.
 
-If you're familiar with the type 2 visualizations from previous section then
+If you're familiar with the type 2 visualizations from the previous section then
 you might wonder why these visualizations are much larger and mostly gray.
 Typically the non-gray section is cropped out of the gray because the gray sections
 have 0 gradient and are uninformative, as in the bottom part of the visualization.
@@ -271,15 +277,16 @@ gray and insignificant, but location information is preserved.
 `conv2` is a bit less straightforward to understand than `conv1`.
 It's hard to say what the neuron on the left seems to be looking for.
 Perhaps it's a black or white background with some sort of clutter from
-the other color. I don't see how such a pattern could contribute to recognition of ILSVRC
+the other color. I don't see inuitively how such a pattern could contribute to recognition of ILSVRC
 object classes because I can't imagine it (whatever it is) appearing very often.
 It's also hard to find a rule that directly relates it to image pixels,
 but none of this necessarily means the neuron is useless. Unit 69 is clearly looking for mostly horizontal
 lines that go up slightly to the left. It's nice that the unit is invariant to
-context (shower tiles, arm band, bowl), and I recognize that this sort of line
-might appear in a variety of objects, but I still have trouble relating it to
-object classes and I'm not sure how the fuzzy bits around the line in the gradient
+context (shower tiles, arm band, bowl) and I recognize that this sort of line
+might appear in a variety of objects.
+Still, I'm not sure how the fuzzy bits around the line in the gradient
 images relate to pixels.
+The visualization is hard to connect to either input or output.
 
 <figure markdown="1">
 ![conv5 and conv4](imgs/conv4_conv5.png){:.center}
@@ -304,7 +311,7 @@ In each example it was easy to understand the neurons in input/pixel space (e.g.
 easy to understand the neurons in output space (e.g., `conv5_137` should probably fire for birds), or
 it was hard to understand the neurons in either space (e.g., `conv2_174`).
 These visualizations are nice, but the inability to understand any neuron in terms of both input _and_ output
-prevents us from understand ConvNets see, how they connect input to output.
+prevents us from understand ConvNets see and how they connect input to output.
 To be more specific,
 
 1. These visualizations _can_ sometimes confirm (qualitatively) that particular neurons
@@ -316,8 +323,8 @@ To be more specific,
    the gabor filters (oriented edge detectors) or the high level object
    parts, but we can't intuit those ways.
 
-3. Even though we can relate some things in specific ways (e.g., a head should have an ear)
-   we don't know for sure that the CNN is doing that (though it's a pretty reasonable guess :).
+3. Even though we can relate some things in specific ways (e.g., a head should have an ear),
+   we don't know for sure that the ConvNet is doing that (though it's a pretty reasonable guess :).
    However, it could also be relating unknown parts in strange or (if you want to go that far) unwanted ways.
    These visualizations don't say that the head is made up of pointy ears, a pink nose, whiskers, etc.
    We might know what things make up a head, but what is `conv2_174` a part of?
@@ -332,9 +339,9 @@ Conclusion
 ---
 
 In this post I started to explore how we understand ConvNets through visualization.
-Current techniques focus on individual neurons and allow to analyze patterns a CNN
+Current techniques focus on individual neurons and allow us to analyze patterns a ConvNet
 recognizes, but they don't show how those patterns relate one another.
-The latter part is essential because ConvNets are supposed work by
+The latter part is essential because ConvNets are supposed to work by
 composing more complex patterns out of simpler ones.
 I'll try to investigate the edges in my next post.
 
@@ -396,7 +403,7 @@ I'll try to investigate the edges in my next post.
     are likely to fire together.
 
     Interestingly, this visualization looks like [parallel coordinates](https://syntagmatic.github.io/parallel-coordinates/),
-    but it's not really. The axes correspond to layers of a CNN and the values along
+    but it's not really. The axes correspond to layers of a ConvNet and the values along
     each axis correspond to individual neurons. Placing neurons on an axis implies
     an order (e.g., neuron 5 is greater than neuron 88), but no such ordering of
     neurons in the same layer exists.
