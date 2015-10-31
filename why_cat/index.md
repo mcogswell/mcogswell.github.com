@@ -211,7 +211,7 @@ So far we have two ways to generate visualizations:
     technique __is image specific__. It asks "Which pixels in this one particular
     picture made the cat activation high?"
 
-    Actually, I lied. Visualizing the pure gradients generates is not very satisfying,
+    Actually, I lied. Visualizing the pure gradients is not very satisfying,
     as shown in Simonyan, Vedaldi, and Zisserman [paper](http://arxiv.org/abs/1312.6034).
     Zeiler and Fergus created a "deconv" visualization which is mathematically similar to the gradient image,
     except it uses a slightly different function to compute the backward pass of the
@@ -311,7 +311,7 @@ In each example it was easy to understand the neurons in input/pixel space (e.g.
 easy to understand the neurons in output space (e.g., `conv5_137` should probably fire for birds), or
 it was hard to understand the neurons in either space (e.g., `conv2_174`).
 These visualizations are nice, but the inability to understand any neuron in terms of both input _and_ output
-prevents us from understand ConvNets see and how they connect input to output.
+prevents us from understanding how ConvNets see and how they connect input to output.
 To be more specific,
 
 1. These visualizations _can_ sometimes confirm (qualitatively) that particular neurons
@@ -340,7 +340,7 @@ Conclusion
 
 In this post I started to explore how we understand ConvNets through visualization.
 Current techniques focus on individual neurons and allow us to analyze patterns a ConvNet
-recognizes, but they don't show how those patterns relate one another.
+recognizes, but they don't show how those patterns relate to one another.
 The latter part is essential because ConvNets are supposed to work by
 composing more complex patterns out of simpler ones.
 I'll try to investigate the edges in my next post.
