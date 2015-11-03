@@ -346,6 +346,11 @@ composing more complex patterns out of simpler ones.
 I'll try to investigate the edges in my next post.
 
 
+Acknowledgements
+---
+
+Thanks to Dan Cogswell and Dhruv Batra for their comments and suggestions.
+
 
 ---
 
