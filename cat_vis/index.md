@@ -7,6 +7,10 @@ disqus_id: cat_vis
 published: false
 ---
 
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
 Why is this a cat?
 ===
 
