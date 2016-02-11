@@ -8,5 +8,8 @@ csl: ieee.csl
 
 ---
 nocite: |
-    @cogswell2014segnet
+    @cogswell2015reducing,
+    @lee2015m,
+    @cogswell2014segnet,
+    @edwards2012running
 ...

@@ -4,7 +4,6 @@ highlighter:      pygments
 
 # Permalinks
 permalink:        pretty
-relative_permalinks: true
 
 # Setup
 title:            Michael Cogswell's Blog
@@ -24,3 +23,5 @@ github:
   repo:           https://github.com/mcogswell/mcogswell.github.com
 
 cv_url:           /assets/cv_oct_2015.pdf
+
+gems: [jekyll-paginate]
