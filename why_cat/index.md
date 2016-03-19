@@ -28,7 +28,7 @@ have done to gain intuition about them, and some opportunities these
 approaches miss. The next post will introduce
 a new visualization technique to help gain more intuition.
 
-(You can see part 2 of this blog [here](/why_cat_2/)
+(You can see part 2 of this blog [here](/why_cat_2/).)
 
 (Convolutional) Neural Networks -- Building Layers of Patterns
 ---
