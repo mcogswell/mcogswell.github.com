@@ -4,7 +4,7 @@ title: Why is this a cat? (part 2)
 comments: true
 disqus_developer: 1
 disqus_id: neuron_relation_vis
-published: false
+published: true
 ---
 
 <script type="text/javascript"
@@ -152,7 +152,7 @@ $$
 This is a generalization of the first approach, where there is only 1 pixel
 to be summed up, so $$f$$ becomes the identity function. That means it also
 extends to cases where a convolutional layer is connected to a fully-connect layer.
-For details, see the code [here](#https://github.com/mcogswell/cnn_treevis/blob/32db46e97c819faa098c04e5880cd00f59046781/lib/recon/reconstruct.py#L300).
+For details, see the code [here](https://github.com/mcogswell/cnn_treevis/blob/32db46e97c819faa098c04e5880cd00f59046781/lib/recon/reconstruct.py#L300).
 
 Here's an example which shows the 600th `fc6` neuron in terms of the
 5 `conv5` units (20, 154, 247, 159, and 222) which most contribute to it.
@@ -378,7 +378,7 @@ is the amount of redundancy between layers. For example, multiple layers seem to
 more than one face detector. It could be that the visualizations aren't good
 enough to distinguish between features that really are different, that the network
 really learns redundant features, or that humans could do a better job at
-seeing the differences. Some of my [recent work](#http://arxiv.org/abs/1511.06068)
+seeing the differences. Some of my [recent work](http://arxiv.org/abs/1511.06068)
 suggests the networks do learn significantly redundant features, so the models
 could be at fault.
 

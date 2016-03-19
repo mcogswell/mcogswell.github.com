@@ -28,6 +28,8 @@ have done to gain intuition about them, and some opportunities these
 approaches miss. The next post will introduce
 a new visualization technique to help gain more intuition.
 
+(You can see part 2 of this blog [here](/why_cat_2/)
+
 (Convolutional) Neural Networks -- Building Layers of Patterns
 ---
 
@@ -344,6 +346,8 @@ recognizes, but they don't show how those patterns relate to one another.
 The latter part is essential because ConvNets are supposed to work by
 composing more complex patterns out of simpler ones.
 I'll try to investigate the edges in my next post.
+
+Update: Check out part 2 of this blog [here](/why_cat_2/).
 
 
 Acknowledgements
