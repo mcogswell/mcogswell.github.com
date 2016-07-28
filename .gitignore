@@ -4,3 +4,5 @@ _site/
 *.swo
 
 .jekyll-metadata
+
+node_modules/

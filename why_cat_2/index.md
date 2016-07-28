@@ -16,7 +16,7 @@ Visualizing Feature Composition
 ===
 
 <figure markdown="1">
-![Grumpy Cat (layer fc7, activation 1757)!](imgs/fc7_1757.jpg){:.center}
+![Grumpy Cat (layer fc7, activation 1757)!](imgs/fc7_1757.jpg){:.center .img-responsive}
 </figure>
 
 My [last post](/why_cat/) described Convolutional Neural Networks (ConvNets)
@@ -159,7 +159,7 @@ Here's an example which shows the 600th `fc6` neuron in terms of the
 Hovering your mouse over the image causes it to zoom.
 
 <figure markdown="1">
-![fc6_conv5](imgs/fc6_600_conv5.png)
+![fc6_conv5](imgs/fc6_600_conv5.png){:.center .img-responsive}
 <figcaption markdown="1">
 `conv5` units which most contributed to the 600th `fc6` activation
 </figcaption>
@@ -189,7 +189,7 @@ Some Features in a Hierarchy
 > Why is this a cat?
 
 <figure markdown="1">
-![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center}
+![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center .img-responsive}
 </figure>
 
 Well... the highest `fc8` activation is unit 284, which means "Siamese cat".
@@ -197,7 +197,7 @@ Well... the highest `fc8` activation is unit 284, which means "Siamese cat".
 to Wikipedia and the ILSVRC doesn't have "Snowshoe Siamese". Let's start at `fc8_284`.
 
 <figure markdown="1">
-![grumpy cat fc8](imgs/grumpy_fc8_284_fc7_4032_fc6.png){:.center}
+![grumpy cat fc8](imgs/grumpy_fc8_284_fc7_4032_fc6.png){:.center .img-responsive}
 <figcaption markdown="1">
 The "Siamese cat" neuron (`fc8_284`) along with units that highly activated it in `fc7`
 and units that highly activated `fc7_4032` in `fc6`.
@@ -221,7 +221,7 @@ fc8_284 -> fc7_4032 -> fc6_1068
 {:/comment}
 
 <figure markdown="1">
-![grumpy cat fc6 to conv5](imgs/grumpy_fc6_1068_conv5.png){:.center}
+![grumpy cat fc6 to conv5](imgs/grumpy_fc6_1068_conv5.png){:.center .img-responsive}
 <figcaption markdown="1">
 A highly activated `fc6` unit and the `conv5` units which most contributed to it.
 </figcaption>
@@ -240,7 +240,7 @@ These are looking for wheels (they look like eyes) and generic animal faces (lot
 conv5 activations look for some sort of animal face).
 
 <figure markdown="1">
-![grumpy cat less relevant conv5](imgs/grumpy_conv5_238_conv5_222.png){:.center}
+![grumpy cat less relevant conv5](imgs/grumpy_conv5_238_conv5_222.png){:.center .img-responsive}
 <figcaption markdown="1">
 </figcaption>
 `conv5_238` and `conv5_222`
@@ -250,7 +250,7 @@ conv5 activations look for some sort of animal face).
 Now we can focus on more interesting neurons.
 
 <figure markdown="1">
-![fc6_conv5](imgs/fc6_1068_conv5.png)
+![fc6_conv5](imgs/fc6_1068_conv5.png){:.center .img-responsive}
 <figcaption markdown="1">
 As shown previously, `conv5_129`, `conv5_247`, and `conv5_243`.
 </figcaption>
@@ -268,7 +268,7 @@ Let's continue to `conv4` to see what makes up a dog face.
 Again, we'll discard two neurons
 
 <figure markdown="1">
-![conv4 discarded](imgs/grumpy_conv4_discard.png)
+![conv4 discarded](imgs/grumpy_conv4_discard.png){:.center .img-responsive}
 <figcaption markdown="1">
 `conv4_295` and `conv4_302`
 </figcaption>
@@ -278,7 +278,7 @@ Again, we'll discard two neurons
 and keep the rest.
 
 <figure markdown="1">
-![conv4 relevant](imgs/grumpy_conv4_relevant.png)
+![conv4 relevant](imgs/grumpy_conv4_relevant.png){:.center .img-responsive}
 <figcaption markdown="1">
 `conv4_371`, `conv4_265`, and `conv4_348`
 </figcaption>
@@ -298,7 +298,7 @@ I'm still interested in faces, so let's look at `conv4_371`.
 We'll throw out 2 neurons
 
 <figure markdown="1">
-![conv3 discarded](imgs/grumpy_conv3_discard.png)
+![conv3 discarded](imgs/grumpy_conv3_discard.png){:.center .img-responsive}
 <figcaption markdown="1">
 `conv3_341` and `conv3_343`
 </figcaption>
@@ -308,7 +308,7 @@ We'll throw out 2 neurons
 and keep the rest.
 
 <figure markdown="1">
-![conv3 keep](imgs/grumpy_conv3_keep.png)
+![conv3 keep](imgs/grumpy_conv3_keep.png){:.center .img-responsive}
 <figcaption markdown="1">
 `conv3_374`, `conv3_240`, and `conv3_204`
 </figcaption>
@@ -327,7 +327,7 @@ but it's hard to name them.
 We'll continue with `conv3_240`.
 
 <figure markdown="1">
-![conv2 discarded](imgs/grumpy_conv2_discard.png)
+![conv2 discarded](imgs/grumpy_conv2_discard.png){:.center .img-responsive}
 <figcaption markdown="1">
 `conv2_13` and `conv2_81`
 </figcaption>
@@ -340,7 +340,7 @@ These are clearly lower level than `conv3`, where there was still
 a simple eye detector and a simple face detector.
 
 <figure markdown="1">
-![conv2 keep](imgs/grumpy_conv2_keep.png)
+![conv2 keep](imgs/grumpy_conv2_keep.png){:.center .img-responsive}
 <figcaption markdown="1">
 `conv2_156`, `conv2_21`, and `conv2_161`
 </figcaption>
@@ -357,7 +357,7 @@ Finally, we visualize `conv1`, which looks for straightforward motifs
 like the classic Gabor filters.
 
 <figure markdown="1">
-![conv1 keep](imgs/grumpy_conv1_keep.png)
+![conv1 keep](imgs/grumpy_conv1_keep.png){:.center .img-responsive}
 <figcaption markdown="1">
 `conv1_93`, `conv1_74`, and `conv1_88`
 </figcaption>
@@ -499,7 +499,7 @@ More Examples
 
 Here are a couple more interesting relations.
 
-![A cat!](imgs/cat_conv5_159.png)
+![A cat!](imgs/cat_conv5_159.png){:.center .img-responsive}
 {:.zoom_img}
 
 {:/comment}

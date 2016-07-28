@@ -6,7 +6,7 @@ highlighter:      rouge
 permalink:        pretty
 
 # Setup
-title:            Michael Cogswell's Blog
+title:            Michael Cogswell
 url:              http://mcogswell.io
 baseurl:          ''
 
@@ -17,7 +17,7 @@ author:
 paginate:         2
 
 # Custom vars
-version:          0.1
+version:          0.2
 
 github:
   repo:           https://github.com/mcogswell/mcogswell.github.com

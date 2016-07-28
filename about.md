@@ -21,6 +21,8 @@ fencing at Virginia Tech.
 [vadiv]: http://va-usfa.com/
 [vtfencing]: http://www.fencing.org.vt.edu/
 
+<a class="sidebar-nav-item" href="{{site.cv_url}}">CV</a>
+
 
 Research Interests {#ri}
 ==================

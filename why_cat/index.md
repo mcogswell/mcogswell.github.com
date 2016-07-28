@@ -11,7 +11,7 @@ Why is this a cat?
 ===
 
 <figure markdown="1">
-![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center}
+![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center .img-responsive}
 </figure>
 
 In other words, "How do you recognize this cat?"
@@ -60,7 +60,7 @@ shown). On the left is the input with 5 nodes and on the right is the output wit
 The first hidden (middle) layer contains 3 nodes and the 2nd has 4.
 
 <figure markdown="1">
-![neural network](imgs/basic_nn.png){:.center}
+![neural network](imgs/basic_nn.png){:.center .img-responsive}
 A simple Neural Network with 4 layers (including input and output)[^nn_diagram].
 </figure>
 
@@ -124,7 +124,7 @@ It's harder to describe how we see.
 > Why is this a cat?
 
 <figure markdown="1">
-![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center}
+![Grumpy Cat!](imgs/grumpy_cat_227.jpg){:.center .img-responsive}
 </figure>
 
 Here's my answer:
@@ -200,7 +200,7 @@ So far we have two ways to generate visualizations:
     a flamingo, but our ConvNet would.
 
     <figure markdown="1">
-    ![flamingo](imgs/simonyan_flamingo.png){:.center}{: style="width: 50%"}
+    ![flamingo](imgs/simonyan_flamingo.png){:.center .img-responsive}{: style="width: 50%"}
     From figure 8 of [[Mahendran and Vedaldi](http://arxiv.org/abs/1412.0035)].
     </figure>
 
@@ -243,7 +243,7 @@ Here are visualizations of neurons 4 and 65 from
 layer `conv1` (after the ReLU, but not after pooling):
 
 <figure markdown="1">
-![conv1](imgs/conv1.png){:.center}
+![conv1](imgs/conv1.png){:.center .img-responsive}
 `conv1_4` and `conv1_65`
 </figure>
 {:.zoom_img}
@@ -271,7 +271,7 @@ To be consistent with future visualizations I left the whole image intact, which
 gray and insignificant, but location information is preserved.
 
 <figure markdown="1">
-![conv2](imgs/conv2.png){:.center}
+![conv2](imgs/conv2.png){:.center .img-responsive}
 `conv2_174` and `conv2_69`
 </figure>
 {:.zoom_img}
@@ -291,7 +291,7 @@ images relate to pixels.
 The visualization is hard to connect to either input or output.
 
 <figure markdown="1">
-![conv5 and conv4](imgs/conv4_conv5.png){:.center}
+![conv5 and conv4](imgs/conv4_conv5.png){:.center .img-responsive}
 `conv5_137` and `conv4_269`
 </figure>
 {:.zoom_img}

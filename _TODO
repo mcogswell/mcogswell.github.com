@@ -1,7 +1,12 @@
 TODO
 ===
+* Change slider to static top bar w/ bootstrap
+
+* Make a "resume/CV" page (home page)
+
 * Make publications linkable and put teaser figures
 
-* Make a "resume/CV" page
-
 * Add a "Talks" section
+    * talk introducing CNNs to VACAS / CV class
+
+* figure out how the RSS stuff works (atom.xml)
