@@ -15,4 +15,7 @@ title: Publications
 <div id="ref-edwards2012running">
 <p>[4] S. H. Edwards, Z. Shams, M. Cogswell, and R. C. Senkbeil, “Running students’ software tests against each others’ code: New life for an old gimmick,” in <em>Proceedings of the 43rd aCM technical symposium on computer science education</em>, 2012, pp. 221–226.</p>
 </div>
+<div id="ref-lee2016stochastic">
+<p>[5] S. Lee, S. Purushwalkam, M. Cogswell, V. Ranjan, D. Crandall, and D. Batra, “Stochastic multiple choice learning for training diverse deep ensembles (similar to m heads),” <em>arXiv preprint arXiv:1606.07839</em>, 2016.</p>
+</div>
 </div>

@@ -1,0 +1,13 @@
+html, body {
+    font-size: 100%;
+}
+.logo {
+    width: 80px;
+    height: 80px;
+}
+
+/* http://stackoverflow.com/questions/19844561/bootstrap-3-vertically-center-navigation-links-when-logo-increasing-the-height */
+.navbar-nav li a, .navbar-header h1 a {
+ line-height: 50px;
+ font-size: 100%;
+}

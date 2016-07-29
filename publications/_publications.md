@@ -11,5 +11,6 @@ nocite: |
     @cogswell2015reducing,
     @lee2015m,
     @cogswell2014segnet,
-    @edwards2012running
+    @edwards2012running,
+    @lee2016stochastic
 ...
