@@ -1,8 +1,13 @@
 ---
-layout: post
-title: Interpretations of Dropout
+layout: blog
+title: Approximate Inference for Deep Networks with Dropout
+comments: true
 published: false
+use_math: true
 ---
+
+Approximate Inference  for Deep Networks with Dropout
+===
 
 One of the first things you're likely to learn when you get in to deep learning
 is Dropout. Deep networks can grow quite large because now we have GPUs that
@@ -56,3 +61,4 @@ It gets a bit better. I can expand this to deep models.
 ... talk about the layer-wise view of actual dropout inference...
 
 
+Vs Gal/Gharamani: They extract uncertainty estimates from Dropout (estimate the mean output and its variance using a monte-carlo procedure)

@@ -5,12 +5,8 @@ comments: true
 disqus_developer: 1
 disqus_id: neuron_relation_vis
 published: true
+use_math: true
 ---
-
-<script type="text/javascript"
-        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
 
 Visualizing Feature Composition
 ===
