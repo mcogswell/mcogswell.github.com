@@ -8,8 +8,6 @@ In 2013 I completed bachelor of science degrees in Computer Science and Mathemat
 at Virginia Tech and liked the place well enough to stay a while longer.
 Currently, I'm a PhD student working on Machine Learning and Computer Vision with
 [Dhruv Batra][dhruv_page].
-Check out my [research interests](#ri) below and [this essay](/2015/03/15/whyai/),
-which I wrote to find out more about what I do.
 
 [dhruv_page]: https://filebox.ece.vt.edu/~dbatra/
 
@@ -41,6 +39,8 @@ Vision problems offer raw inputs which require complex models of
 perception to understand. Still, effective vision systems exist in
 animals, so at least part of the problem is simple enough to solve
 without more complex human-like abstractions.
+
+I wrote an [essay](/blog/why_ai) about how I got interested in the field a while ago.
 
 
 Other Interests
