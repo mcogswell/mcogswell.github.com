@@ -30,9 +30,9 @@
       `layout: page` in the front-matter. See readme for usage.
     {% endcomment %}
 
-    {% assign pages_list = site.pages | sort:"url" %}
+    {% assign pages_list = site.pages | sort:"navbar_id" %}
     {% for node in pages_list %}
-      {% if node.title != null %}
+      {% if node.title != null and node.navbar_id >= 0 %}
         {% if node.layout == "page" %}
           <li role="presentation" class="{% if page.url == node.url %} active{% endif %}"><a href="{{ node.url }}">{{ node.title }}</a></li>
         {% endif %}
