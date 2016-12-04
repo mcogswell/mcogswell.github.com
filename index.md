@@ -14,16 +14,9 @@ Publications
 ---
 {: .anchor #pubs}
 
-__Diverse Beam Search: Decoding Diverse Solutions from Neural Sequence Models__ \\
-Ashwin K Vijayakumar, _Michael Cogswell_, Ramprasath R. Selvaraju, Qing Sun, Stefan Lee, David Crandall, Dhruv Batra \\
-(arXiv preprint) \\
-[[arXiv]](https://arxiv.org/abs/1610.02424)
-[[demo]](http://dbs.cloudcv.org/)
-
-
 __Grad-CAM: Why did you say that? Visual Explanations from Deep Networks via Gradient-based Localization__ \\
 Ramprasaath R. Selvaraju, Abhishek Das, Ramakrishna Vedantam, _Michael Cogswell_, Devi Parikh, Dhruv Batra \\
-(arXiv preprint) \\
+(NIPS 2016 Workshop -- Interpretable ML for Complex Systems) \\
 [[arXiv]](https://arxiv.org/abs/1610.02391)
 [[code]](https://github.com/Cloud-CV/Grad-CAM)
 [[demo]](http://gradcam.cloudcv.org/)
@@ -33,6 +26,13 @@ __Stochastic Multiple Choice Learning for Training Diverse Deep Ensembles__ \\
 Stefan Lee, Senthil Purushwalkam, _Michael Cogswell_, Viresh Ranjan, David Crandall, Dhruv Batra \\
 (NIPS 2016) \\
 [[arXiv]](https://arxiv.org/abs/1606.07839)
+
+
+__Diverse Beam Search: Decoding Diverse Solutions from Neural Sequence Models__ \\
+Ashwin K Vijayakumar, _Michael Cogswell_, Ramprasath R. Selvaraju, Qing Sun, Stefan Lee, David Crandall, Dhruv Batra \\
+(arXiv preprint) \\
+[[arXiv]](https://arxiv.org/abs/1610.02424)
+[[demo]](http://dbs.cloudcv.org/)
 
 
 __Reducing Overfitting in Deep Networks by Decorrelating Representations__ \\
