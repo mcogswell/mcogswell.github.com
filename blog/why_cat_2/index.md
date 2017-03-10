@@ -15,7 +15,7 @@ Visualizing Feature Composition
 ![Grumpy Cat (layer fc7, activation 1757)!](imgs/fc7_1757.jpg){:.center .img-responsive}
 </figure>
 
-My [last post](/why_cat/) described Convolutional Neural Networks (ConvNets)
+My [last post](/blog/why_cat/) described Convolutional Neural Networks (ConvNets)
 and some obstacles to understanding them. ConvNets identify objects in images
 by computing layers of features and using the last layer for object identification
 rather than directly using the input. Layers closer to the input capture
