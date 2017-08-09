@@ -4,12 +4,12 @@ navbar_id: 1
 title: About Me
 ---
 
-In 2013 I completed bachelor of science degrees in Computer Science and Mathematics
-at Virginia Tech and liked the place well enough to stay a while longer.
-Currently, I'm a PhD student working on Machine Learning and Computer Vision with
-[Dhruv Batra][dhruv_page].
+I'm a grad student working on Deep Learning.
+In 2016 I completed Master of Science degree at Virginia Tech and started my PhD.
+At the beginning of 2017 I moved to Georgia Tech with my advisor, [Dhruv Batra][dhruv_page],
+to continue my PhD.
 
-[dhruv_page]: https://filebox.ece.vt.edu/~dbatra/
+[dhruv_page]: https://www.cc.gatech.edu/~dbatra/index.html
 
 [CV]({{site.cv_url}})
 
@@ -49,10 +49,11 @@ Other Interests
 
 Aside from research, I've been an active fencer since 2005, competing in
 club collegiate tournaments and USFA events (mostly in the
-[Virginia Division][vadiv]). I'm currently a C2014 in foil.
-Check out the [VT fencing page][vtfencing] if you're interested in
-fencing at Virginia Tech.
+[Virginia Division][vadiv]). I'm currently a C2017 in foil.
+I fence at the [Yellow Jacket Fencing Club (GT)][gtfencing] and [Eagle Fencing][eagle].
 
 [vadiv]: http://va-usfa.com/
 [vtfencing]: http://www.fencing.org.vt.edu/
+[gtfencing]: http://www.yellowjacketfencing.com/
+[eagle]: http://eaglefencingclub.com
 

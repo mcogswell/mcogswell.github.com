@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 
-Hi! I'm a PhD student working with [Dhruv Batra](https://filebox.ece.vt.edu/~dbatra/).
+Hi! I'm a PhD student working with [Dhruv Batra](https://www.cc.gatech.edu/~dbatra/index.html) at Georgia Tech.
 I try to understand Neural Networks, especially as applied to Computer Vision.
 As deep networks become more widely used, I hope to find new ways for users
 to understand the complex systems they use and to leverage this understanding
@@ -15,11 +15,12 @@ Publications
 {: .anchor #pubs}
 
 __Grad-CAM: Why did you say that? Visual Explanations from Deep Networks via Gradient-based Localization__ \\
-Ramprasaath R. Selvaraju, Abhishek Das, Ramakrishna Vedantam, _Michael Cogswell_, Devi Parikh, Dhruv Batra \\
-(NIPS 2016 Workshop -- Interpretable ML for Complex Systems) \\
+Ramprasaath R. Selvaraju, _Michael Cogswell_, Abhishek Das, Ramakrishna Vedantam, Devi Parikh, Dhruv Batra \\
+(ICCV 2017) \\
 [[arXiv]](https://arxiv.org/abs/1610.02391)
-[[code]](https://github.com/Cloud-CV/Grad-CAM)
+[[code]](https://github.com/ramprs/grad-cam)
 [[demo]](http://gradcam.cloudcv.org/)
+[[video]](http://youtu.be/COjUB9Izk6E)
 
 
 __Stochastic Multiple Choice Learning for Training Diverse Deep Ensembles__ \\
