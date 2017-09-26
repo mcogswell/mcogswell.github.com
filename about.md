@@ -7,7 +7,8 @@ title: About Me
 I'm a grad student working on Deep Learning.
 In 2016 I completed Master of Science degree at Virginia Tech and started my PhD.
 At the beginning of 2017 I moved to Georgia Tech with my advisor, [Dhruv Batra][dhruv_page],
-to continue my PhD.
+to continue my PhD. I sit at desk 271 in the [College of Computing Building](https://www.cc.gatech.edu/about/facilities)
+and you can reach me at michael.a.cogswell at gmail.
 
 [dhruv_page]: https://www.cc.gatech.edu/~dbatra/index.html
 
