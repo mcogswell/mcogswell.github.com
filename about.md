@@ -51,7 +51,8 @@ Other Interests
 Aside from research, I've been an active fencer since 2005, competing in
 club collegiate tournaments and USFA events (mostly in the
 [Virginia Division][vadiv]). I'm currently a C2017 in foil.
-I fence at the [Yellow Jacket Fencing Club (GT)][gtfencing] and [Eagle Fencing][eagle].
+I fence at the [Eagle Fencing Club][eagle] and sometimes Georgia Tech's
+[Yellow Jacket Fencing Club][gtfencing].
 
 [vadiv]: http://va-usfa.com/
 [vtfencing]: http://www.fencing.org.vt.edu/
