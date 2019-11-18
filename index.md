@@ -14,6 +14,17 @@ Publications
 ---
 {: .anchor #pubs}
 
+__Dialog without Dialog: Learning Image-Discriminative DialogPolicies from Single-Shot Question Answering Data__ \\
+_Michael Cogswell_, Jiasen Lu, Devi Parikh, Stefan Lee, Dhruv Batra \\
+(Forthcoming Work)
+
+
+__Emergence of Compositional Language with Deep Generational Transmission__ \\
+_Michael Cogswell_, Jiasen Lu, Stefan Lee, Devi Parikh, Dhruv Batra \\
+(arXiv 2019) \\
+[[arXiv]](https://arxiv.org/abs/1904.09067)
+
+
 __Diverse Beam Search: Decoding Diverse Solutions from Neural Sequence Models__ \\
 Ashwin K Vijayakumar, _Michael Cogswell_, Ramprasath R. Selvaraju, Qing Sun, Stefan Lee, David Crandall, Dhruv Batra \\
 (AAAI 2018) \\
