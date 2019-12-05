@@ -11,3 +11,7 @@ html, body {
  line-height: 50px;
  font-size: 100%;
 }
+
+.intro-pic {
+    margin-right: 30px;
+}

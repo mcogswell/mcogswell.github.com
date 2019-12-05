@@ -3,18 +3,33 @@ layout: default
 title: Home
 ---
 
-Hi! I'm a PhD student working with [Dhruv Batra](https://www.cc.gatech.edu/~dbatra/index.html) at Georgia Tech.
-I try to understand Neural Networks, especially as applied to Computer Vision.
-As deep networks become more widely used, I hope to find new ways for users
-to understand the complex systems they use and to leverage this understanding
-to build better models.
+
+<img class="img-responsive intro-pic" align="left" width="25%" src="/assets/me_canyon.jpeg" alt="Michael">
+
+I'm a 5th year PhD candidate advised by <a href="https://www.cc.gatech.edu/~dbatra/index.html">Dhruv Batra</a>
+and working closely with <a href="https://www.cc.gatech.edu/~parikh/">Devi Parikh</a>
+at Georgia Tech.
+My research interests are broadly in artificial intelligence with a focus
+on deep learning.
+During my PhD I have explored these interests by building and understanding
+neural networks as applied to vision and language.
+
+<span class="text-danger">I am on the job market! (Dec. 2019)</span>
+
+I want to contribute to technically and philosophically challenging
+long term research projects.
+My perspective and skills would best contribute to a holistic approach to
+building or understanding AI that treats artifacts and understanding as
+primary goals and publications as secondary.
+If that sounds like the candidate you're looking for then send me an email at
+michael dot a dot cogswell at gmail dot com and find my CV [here]({{site.cv_url}}).
 
 
 Publications
 ---
 {: .anchor #pubs}
 
-__Dialog without Dialog: Learning Image-Discriminative DialogPolicies from Single-Shot Question Answering Data__ \\
+__Dialog without Dialog: Learning Image-Discriminative Dialog Policies from Single-Shot Question Answering Data__ \\
 _Michael Cogswell_, Jiasen Lu, Devi Parikh, Stefan Lee, Dhruv Batra \\
 (Forthcoming Work)
 

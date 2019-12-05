@@ -3,6 +3,8 @@ _site/
 *.swp
 *.swo
 
+**.DS_Store
+
 .jekyll-metadata
 
 node_modules/

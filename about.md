@@ -4,11 +4,11 @@ navbar_id: 1
 title: About Me
 ---
 
-I'm a grad student working on Deep Learning.
-In 2016 I completed Master of Science degree at Virginia Tech and started my PhD.
-At the beginning of 2017 I moved to Georgia Tech with my advisor, [Dhruv Batra][dhruv_page],
-to continue my PhD. I sit at desk 271 in the [College of Computing Building](https://www.cc.gatech.edu/about/facilities)
-and you can reach me at michael.a.cogswell at gmail.
+I'm a PhD student working on deep learning with applications in vision and language.
+In 2016 I completed Master of Science degree at Virginia Tech with [Dhruv Batra][dhruv_page].
+I continued working on my PhD with Dhruv then Georgia Tech with him in 2017.
+I sit in the [CODA building](https://codatechsquare.com/)
+and you can reach me at michael dot a dot cogswell at gmail.
 
 [dhruv_page]: https://www.cc.gatech.edu/~dbatra/index.html
 
@@ -50,7 +50,7 @@ Other Interests
 
 Aside from research, I've been an active fencer since 2005, competing in
 club collegiate tournaments and USFA events (mostly in the
-[Virginia Division][vadiv]). I'm currently a C2017 in foil.
+[Virginia Division][vadiv]). I'm currently a C2018 in foil.
 I fence at the [Eagle Fencing Club][eagle] and sometimes Georgia Tech's
 [Yellow Jacket Fencing Club][gtfencing].
 
