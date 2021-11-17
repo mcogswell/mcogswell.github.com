@@ -6,15 +6,15 @@ title: Home
 
 <img class="img-responsive intro-pic" align="left" width="25%" src="/assets/me_canyon.jpeg" alt="Michael">
 
-I'm a 5th year PhD candidate advised by <a href="https://www.cc.gatech.edu/~dbatra/index.html">Dhruv Batra</a>
-and working closely with <a href="https://www.cc.gatech.edu/~parikh/">Devi Parikh</a>
-at Georgia Tech.
-My research interests are broadly in artificial intelligence with a focus
-on deep learning.
-During my PhD I have explored these interests by building and understanding
-neural networks as applied to vision and language.
+I am a research scientist at SRI International's Center for Vision Technologies
+in Princeton, NJ. I work on a wide range of machine learning applications
+centered around the application of deep learning to vision and language problems.
 
-<span class="text-danger">I am on the job market! (Dec. 2019)</span>
+During my PhD I was advised by <a href="https://www.cc.gatech.edu/~dbatra/index.html">Dhruv Batra</a>
+and worked closely with <a href="https://www.cc.gatech.edu/~parikh/">Devi Parikh</a>
+at Georgia Tech.
+During my PhD I explored these interests by building and understanding
+neural networks as applied to vision and language.
 
 I want to contribute to technically and philosophically challenging
 long term research projects.
