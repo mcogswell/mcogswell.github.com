@@ -23,6 +23,6 @@ version:          0.2
 github:
   repo:           https://github.com/mcogswell/mcogswell.github.com
 
-cv_url:           /assets/cv_dec_2019.pdf
+cv_url:           /assets/cv_oct_2023.pdf
 
 plugins: [jekyll-paginate]
